@@ -26,6 +26,10 @@ class CreateLikesTable extends Migration
 
             $table->timestamp('created_at')->useCurrent();
 
+            // 複合ユニーク：同一ユーザが同一商品に重複いいね不可
+            $table->unique(['item_id', 'user_id']);
+
+
         });
     }
 
