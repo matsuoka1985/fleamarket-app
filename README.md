@@ -1,5 +1,5 @@
 # 1. リポジトリをクローン
-git clone git@github.com:matsuoka1985/fleamarket-app.git
+```git clone git@github.com:matsuoka1985/fleamarket-app.git```
 
 cd fleamarket-app
 
@@ -9,14 +9,14 @@ docker compose up -d --build
 # 3. phpコンテナに入る
 docker-compose exec php bash
 
-# 5. .envファイルを作成（PHPコンテナの中で実行）
+# 5. .envファイルを作成（以下は全てPHPコンテナの中で実行）
 cp .env.example .env
 
-# 6. composer install（PHPコンテナの中で実行）
+# 6. composer install
 composer install
 
-# 7. アプリキー生成（PHPコンテナの中で実行）
+# 7. アプリキー生成
 php artisan key:generate
 
-# 8. マイグレーション（PHPコンテナの中で実行）
+# 8. マイグレーション
 php artisan migrate
