@@ -6,7 +6,7 @@ cd fleamarket-app
 # 2. コンテナを起動
 docker compose up -d --build
 
-# 3. phpコンテナに入る。
+# 3. phpコンテナに入る
 docker-compose exec php bash
 
 # 5. .envファイルを作成（PHPコンテナの中で実行）
