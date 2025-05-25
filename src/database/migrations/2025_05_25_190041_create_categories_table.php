@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('key', 100)->unique(); // e.g., 'fashion'
             $table->string('label', 100);         // e.g., 'ファッション'
-            $table->integer('sort_order');
+            $table->integer('sort_order')->default(1);
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
