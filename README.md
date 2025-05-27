@@ -20,3 +20,9 @@ php artisan key:generate
 
 # 8. マイグレーション
 php artisan migrate
+
+# 9. npmの依存パッケージインストール
+npm install
+
+# 10. 開発用ビルド
+npm run dev
