@@ -23,7 +23,7 @@
                 </div>
 
                 <!-- Search Bar -->
-                @if (!request()->routeIs('login') && !request()->routeIs('register'))
+                @if (!request()->routeIs('login') && !request()->routeIs(['register','verification.notice']))
                     <div class="hidden md:block flex-grow max-w-2xl mx-4 w-96">
                         <form action="
              {{-- {{ route('items.search') }} --}}
@@ -38,6 +38,7 @@
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-4 flex-shrink-0">
                     @auth
+                    @if(!request()->routeIs(['verification.notice']) )
                         <a href="
                   {{-- {{ route('logout') }} --}}
                 "
@@ -46,8 +47,9 @@
                   {{-- {{ route('mypage') }} --}}
                 "
                             class="hover:underline">マイページ</a>
+                    @endif
                     @else
-                        @if (!request()->routeIs('login') && !request()->routeIs('register'))
+                        @if (!request()->routeIs('login') && !request()->routeIs(['register','verification.notice']))
                             <a href="
                     {{-- {{ route('login') }} --}}
                   "
@@ -58,23 +60,26 @@
                                 class="hover:underline">マイページ</a>
                         @endif
                     @endauth
-
-                    <a href="
+                    @if (!request()->routeIs(['register','verification.notice']))
+                        <a href="
                 {{-- {{ route('items.create') }} --}}
               "
-                        class="bg-white text-black px-3 py-1 rounded hover:bg-gray-200">出品</a>
+                            class="bg-white text-black px-3 py-1 rounded hover:bg-gray-200">出品</a>
+                    @endif
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-white focus:outline-none">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
+                @if (!request()->routeIs(['register','verification.notice']))
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="text-white focus:outline-none">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -82,7 +87,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-black text-white px-4 py-4 space-y-4">
 
             {{-- 検索フォーム --}}
-            @if (!request()->routeIs('login') && !request()->routeIs('register'))
+            @if (!request()->routeIs('login') && !request()->routeIs(['register','verification.notice']))
                 <form action="
         {{-- {{ route('items.search') }} --}}
         " method="GET" class="max-w-sm mx-auto">
@@ -101,7 +106,7 @@
             {{-- {{ route('mypage') }} --}}
             " class="block">マイページ</a>
                 @else
-                    @if (!request()->routeIs('login') && !request()->routeIs('register'))
+                    @if (!request()->routeIs('login') && !request()->routeIs(['register','verification.notice']))
                         <a href="
                 {{-- {{ route('login') }} --}}
                 " class="block">ログイン</a>
@@ -113,12 +118,16 @@
             </div>
 
             {{-- 出品ボタン --}}
-            <div class="max-w-sm mx-auto">
-                <a href="
-        {{-- {{ route('items.create') }} --}}
-        "
-                    class="block w-full bg-white text-black px-4 py-2 rounded text-center hover:bg-gray-200">出品</a>
-            </div>
+            @if (!request()->routeIs(['register','verification.notice']))
+                <div class="max-w-sm mx-auto">
+                    <a href="
+                    {{-- {{ route('items.create') }} --}}
+                "
+                        class="bg-white text-black px-3 py-1 rounded hover:bg-gray-200">
+                        出品
+                    </a>
+                </div>
+            @endif
         </div>
 
 
@@ -129,9 +138,7 @@
             });
         </script>
     </header>
-    <main >
-        @yield('content')
-    </main>
+    @yield('content')
 </body>
 
 </html>
