@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ItemImage extends Model
 {
     use HasFactory;
+    protected $fillable = ['item_id', 'image_url', 'sort_order'];
+
 
     public function item()
     {

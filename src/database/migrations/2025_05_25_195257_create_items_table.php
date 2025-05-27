@@ -17,11 +17,12 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title', 255);
-            $table->string('brand_name', 255);
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            // $table->string('brand_name', 255);
+            // $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->text('description');
             $table->integer('price');
             $table->string('status', 255);
+            $table->string('condition', 255);
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

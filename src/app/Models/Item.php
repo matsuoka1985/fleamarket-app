@@ -8,15 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'title',
+        'description',
+        'price',
+        'status',
+        'condition',
+        'img_url'
+    ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+
+
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 
     public function images()
