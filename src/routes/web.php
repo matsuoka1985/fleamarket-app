@@ -22,6 +22,10 @@ Route::get('/test', function () {
     return view('test');
 });
 
+Route::get('/home', function () {
+    return view('test');
+})->middleware(['auth', 'verified']);
+
 Route::get('/register', function () {
     return view('auth.register');
 })->middleware(['guest'])->name('register');

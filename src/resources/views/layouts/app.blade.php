@@ -23,7 +23,7 @@
                 </div>
 
                 <!-- Search Bar -->
-                @if (!request()->routeIs('login') && !request()->routeIs(['register','verification.notice',]))
+                @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
                     <div class="hidden md:block flex-grow max-w-2xl mx-4 w-96">
                         <form action="
              {{-- {{ route('items.search') }} --}}
@@ -38,18 +38,20 @@
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-4 flex-shrink-0">
                     @auth
-                    @if(!request()->routeIs(['verification.notice',]) )
-                        <a href="
-                  {{-- {{ route('logout') }} --}}
-                "
-                            class="hover:underline">ログアウト</a>
-                        <a href="
-                  {{-- {{ route('mypage') }} --}}
-                "
-                            class="hover:underline">マイページ</a>
-                    @endif
+                        @if (!request()->routeIs(['verification.notice']))
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="hover:underline bg-transparent text-white">
+                                    ログアウト
+                                </button>
+                            </form>
+                            <a href="
+                          {{-- {{ route('mypage') }} --}}
+                        "
+                                class="hover:underline">マイページ</a>
+                        @endif
                     @else
-                        @if (!request()->routeIs('login') && !request()->routeIs(['register','verification.notice']))
+                        @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
                             <a href="
                     {{-- {{ route('login') }} --}}
                   "
@@ -60,7 +62,7 @@
                                 class="hover:underline">マイページ</a>
                         @endif
                     @endauth
-                    @if (!request()->routeIs(['register','verification.notice','login']))
+                    @if (!request()->routeIs(['register', 'verification.notice', 'login']))
                         {{-- 出品ボタン --}}
                         <a href="
                 {{-- {{ route('items.create') }} --}}
@@ -70,7 +72,7 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                @if (!request()->routeIs(['register','verification.notice','login']))
+                @if (!request()->routeIs(['register', 'verification.notice', 'login']))
                     <div class="md:hidden">
                         <button id="mobile-menu-button" class="text-white focus:outline-none">
                             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -88,7 +90,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-black text-white px-4 py-4 space-y-4">
 
             {{-- 検索フォーム --}}
-            @if (!request()->routeIs('login') && !request()->routeIs(['register','verification.notice']))
+            @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
                 <form action="
         {{-- {{ route('items.search') }} --}}
         " method="GET" class="max-w-sm mx-auto">
@@ -100,14 +102,17 @@
             {{-- 認証状態別リンク --}}
             <div class="text-center space-y-2">
                 @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="block w-full text-left text-white hover:underline">
+                            ログアウト
+                        </button>
+                    </form>
                     <a href="
-            {{-- {{ route('logout') }} --}}
-            " class="block">ログアウト</a>
-                    <a href="
-            {{-- {{ route('mypage') }} --}}
-            " class="block">マイページ</a>
+    {{-- {{ route('mypage') }} --}}
+    " class="block">マイページ</a>
                 @else
-                    @if (!request()->routeIs('login') && !request()->routeIs(['register','verification.notice']))
+                    @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
                         <a href="
                 {{-- {{ route('login') }} --}}
                 " class="block">ログイン</a>
@@ -119,7 +124,7 @@
             </div>
 
             {{-- 出品ボタン --}}
-            @if (!request()->routeIs(['register','verification.notice','login']))
+            @if (!request()->routeIs(['register', 'verification.notice', 'login']))
                 <div class="max-w-sm mx-auto">
                     <a href="
                     {{-- {{ route('items.create') }} --}}
