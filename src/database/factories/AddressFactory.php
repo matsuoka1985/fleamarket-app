@@ -18,10 +18,8 @@ class AddressFactory extends Factory
             //
             'user_id' => User::inRandomOrder()->first()->id,
             'postal_code' => $this->faker->postcode(),
-            'prefecture' => $this->faker->prefecture(),
-            'city' => $this->faker->city(),
-            'address_line' => $this->faker->streetAddress(),
-            'phone_number' => $this->faker->phoneNumber(),
+            'address' => $this->faker->prefecture() . $this->faker->city() . $this->faker->streetAddress(),
+            'building' => $this->faker->secondaryAddress(),
         ];
     }
 }

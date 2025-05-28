@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class RegisterRequest extends FormRequest //削除しても問題ない。
 {
     /**
      * Determine if the user is authorized to make this request.

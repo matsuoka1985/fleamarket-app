@@ -21,11 +21,10 @@ class CreateAddressesTable extends Migration
                 ->constrained()
                 ->onDelete('cascade');
 
-            $table->string('postal_code', 20);
-            $table->string('prefecture', 100);
-            $table->string('city', 100);
-            $table->string('address_line', 255);
-            $table->string('phone_number', 20);
+
+            $table->string('postal_code', 20);    // 郵便番号
+            $table->string('address', 255);       // 住所（都道府県 + 市区町村 + 番地）
+            $table->string('building', 255);      // 建物名
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

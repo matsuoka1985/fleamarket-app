@@ -21,8 +21,11 @@ php artisan key:generate
 # 8. マイグレーション
 php artisan migrate
 
-# 9. npmの依存パッケージインストール
+# 9. ストレージリンク作成（画像などのアップロード表示に必要）
+php artisan storage:link
+
+# 10. npmの依存パッケージインストール
 npm install
 
-# 10. 開発用ビルド
+# 11. 開発用ビルド
 npm run dev
