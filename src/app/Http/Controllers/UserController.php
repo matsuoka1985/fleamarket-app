@@ -3,6 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Profiler\Profile;
+use App\Http\Requests\AddressRequest;
+use App\Http\Requests\ProfileRequest;
+
+
+
 
 class UserController extends Controller
 {
@@ -51,12 +59,27 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
         //
+        $user = Auth::user();
+        $address = $user->addresses()->first();
+
+        if (!$address) {
+            // 初回登録（createフォームとして利用）
+            return view('profile.edit', [
+                'user' => $user,
+                'address' => null,
+            ]);
+        }
+
+        return view('profile.edit', [
+            'user' => $user,
+            'address' => $address,
+        ]);
     }
 
     /**
@@ -66,10 +89,31 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProfileRequest $profileRequest, AddressRequest $addressRequest)
     {
-        //
+        $user = Auth::user();
+
+        $user->name = $profileRequest->input('name');
+
+        if ($profileRequest->hasFile('image')) {
+            $path = $profileRequest->file('image')->store('public/images/users');
+            $user->image = Storage::url($path);
+        }
+
+        $user->save();
+
+        $addressData = $addressRequest->only(['postal_code', 'address', 'building']);
+        $address = $user->addresses()->first();
+
+        if ($address) {
+            $address->update($addressData);
+        } else {
+            $user->addresses()->create($addressData);
+        }
+
+        return redirect()->route('home')->with('status', 'プロフィールを更新しました');
     }
+
 
     /**
      * Remove the specified resource from storage.

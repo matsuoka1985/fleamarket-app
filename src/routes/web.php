@@ -33,7 +33,7 @@ Route::get('/', [ItemController::class, 'index'])->name('items.index');
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
 
 // 認証が必要な機能（中括り）
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
 
     // 商品出品ページ
     Route::get('/sell', [ItemController::class, 'create'])->name('items.create');
@@ -45,5 +45,8 @@ Route::middleware(['auth'])->group(function () {
 
     // マイページ関連（購入/出品タブはクエリで）
     Route::get('/mypage', [UserController::class, 'show'])->name('users.show');
-    Route::get('/mypage/profile', [UserController::class, 'edit'])->name('users.edit');
+    Route::get('/mypage/profile', [UserController::class, 'edit'])->name('users.edit'); //完了。
+
+    // Route::post('/mypage/profile', [UserController::class, 'store'])->name('profile.store');//着手中、削除しても問題ない。
+    Route::put('/mypage/profile', [UserController::class, 'update'])->name('profile.update'); //着手中。
 });

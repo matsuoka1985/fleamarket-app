@@ -8,18 +8,10 @@
         <div class="w-full max-w-md space-y-8">
             <!-- タイトル -->
             <h2 class="text-center text-2xl font-bold text-gray-900">会員登録</h2>
-            {{-- validation仮始まり --}}
-            {{-- @if ($errors->any())
-                <div class="text-red-500 text-sm space-y-1">
-                    @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                    @endforeach
-                </div>
-            @endif --}}
-            {{-- validation仮終わり --}}
+
 
             <!-- フォーム -->
-            <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-6" novalidate>
+            <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-6" >
                 @csrf
                 <div class="space-y-4">
                     <!-- ユーザー名 -->
