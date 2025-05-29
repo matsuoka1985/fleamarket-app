@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Item;
 
 class ItemController extends Controller
 {
@@ -11,9 +12,31 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $query = Item::query();
+
+        if ($request->query('tab') === 'mylist') {
+            if (!auth()->check()) {
+                return redirect()->route('login');
+            }
+
+            $user = auth()->user();
+
+            $query->whereHas('likes', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        }
+
+        if ($request->filled('keyword')) {
+            $keyword = $request->input('keyword');
+            $query->where('title', 'like', '%' . $keyword . '%');
+        }
+
+        $items = $query->latest()->get();
+
+        return view('items.index', compact('items'));
     }
 
     /**

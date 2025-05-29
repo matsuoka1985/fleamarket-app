@@ -24,7 +24,7 @@ Route::get('/test', function () {
 
 Route::get('/home', function () {
     return view('test');
-})->middleware(['auth', 'verified']);
+})->middleware(['auth', 'verified']); //テスト用のルーティング。最後に削除しても問題ない。
 
 Route::get('/register', function () {
     return view('auth.register');
@@ -49,8 +49,7 @@ Route::middleware(['auth','verified'])->group(function () {
 
     // マイページ関連（購入/出品タブはクエリで）
     Route::get('/mypage', [UserController::class, 'show'])->name('users.show');
-    Route::get('/mypage/profile', [UserController::class, 'edit'])->name('users.edit'); //完了。
+    Route::get('/mypage/profile', [UserController::class, 'edit'])->name('users.edit'); //メール認証まで終わったユーザーが最初にリダイレクトされるページここで必須項目を入力してようやく完全なサインアップ完了。メール認証が済んでいてもここで必須項目を入力していないユーザーはここにリダイレクトされる。また、ユーザーがプロフィール編集する際もこのページを利用する。
 
-    // Route::post('/mypage/profile', [UserController::class, 'store'])->name('profile.store');//着手中、削除しても問題ない。
-    Route::put('/mypage/profile', [UserController::class, 'update'])->name('profile.update'); //着手中。
+    Route::put('/mypage/profile', [UserController::class, 'update'])->name('profile.update'); //上の画面におけるバックエンド処理。
 });
