@@ -56,7 +56,7 @@
                     @else
                         @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
                             <a href="
-                    {{-- {{ route('login') }} --}}
+                    {{ route('login') }}
                   "
                                 class="hover:underline">ログイン</a>
                             <a href="

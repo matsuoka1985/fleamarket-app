@@ -68,6 +68,17 @@ Route::middleware(['auth', 'verified'])->group(
 
 
 
+
+
+Route::post('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
+// Route::get('/checkout/success/{item}', [OrderController::class, 'success'])->name('orders.success');
+Route::get('/checkout/success/{item}', function(){
+    return "成功";
+})->name('orders.success');//仮。後からこれは削除して、上のコメントアウトされている方をきちんと実装する。
+Route::get('/checkout/cancel/{item}', [OrderController::class, 'cancel'])->name('orders.cancel');
+
+
+
 // 認証が必要な機能（中括り）
 Route::middleware(['auth', 'verified', 'require.address'])->group(function () {
 
@@ -76,7 +87,20 @@ Route::middleware(['auth', 'verified', 'require.address'])->group(function () {
     Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 
     // 商品購入確認・配送先変更
-    Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('orders.create');
+    Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('orders.create'); //商品購入画面
+
+    // 決済中継ページ（Session作成 → stripe.redirectToCheckout）
+    Route::post('/checkout/{item_id}', [OrderController::class, 'checkout'])->name('orders.checkout'); //決済中継ページ。ここでStripeのCheckout Sessionを作成して、フロントエンドにリダイレクトする。
+
+    // 成功後
+    Route::get('/checkout/success/{item}', [OrderController::class, 'success'])->name('orders.success'); //決済成功後の処理。ここで注文情報を保存する。最後にユーザーにthanksページを表示する。
+
+    // キャンセル時
+    Route::get('/checkout/cancel/{item}', [OrderController::class, 'cancel'])->name('orders.cancel'); //決済キャンセル時の処理。
+
+
+
+
     Route::get('/purchase/address/{item_id}', [OrderController::class, 'editAddress'])->name('orders.editAddress');
 
     // マイページ関連（購入/出品タブはクエリで）
