@@ -17,6 +17,11 @@ class ItemController extends Controller
         //
         $query = Item::query();
 
+        if (auth()->check()) {
+            // 自分が出品した商品を除外
+            $query->where('user_id', '!=', auth()->id());
+        }
+
         if ($request->query('tab') === 'mylist') {
             if (!auth()->check()) {
                 return redirect()->route('login');
@@ -66,10 +71,13 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($item_id)
     {
-        //
+        $item = Item::with(['images', 'categories', 'user', 'likes'])
+            ->findOrFail($item_id);
+        return view('items.show', compact('item'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

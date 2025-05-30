@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Comment;
+use App\Http\Requests\CommentRequest;
+
 
 class CommentController extends Controller
 {
@@ -32,10 +35,18 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CommentRequest $request, $item_id)
     {
-        //
+        Comment::create([
+            'user_id' => auth()->id(),
+            'item_id' => $item_id,
+            'content' => $request->input('comment'),
+        ]);
+
+        return redirect()->route('items.show', ['item_id' => $item_id])
+            ->with('success', 'コメントを投稿しました');
     }
+
 
     /**
      * Display the specified resource.

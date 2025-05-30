@@ -3,9 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Item; 
 
 class LikeController extends Controller
 {
+    public function toggle(Item $item)
+    {
+        $user = auth()->user();
+
+        $existingLike = $item->likes()->where('user_id', $user->id)->first();
+
+        if ($existingLike) {
+            $existingLike->delete();
+        } else {
+            $item->likes()->create([
+                'user_id' => $user->id,
+                'created_at' => now(),
+            ]);
+        }
+
+        return back();
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -5,6 +5,11 @@
         <div class="w-full max-w-md space-y-8">
             <!-- タイトル -->
             <h2 class="text-center text-2xl font-bold text-gray-900">プロフィール設定</h2>
+            @if (session('status'))
+    <div class="mb-4 text-sm text-green-600 font-semibold text-center">
+        {{ session('status') }}
+    </div>
+@endif
 
             <!-- フォーム -->
             <form method="POST"
