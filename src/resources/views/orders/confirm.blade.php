@@ -2,6 +2,12 @@
 
 @section('content')
 <main class="bg-white py-10 px-4 sm:px-6 lg:px-8">
+    @if (session('status'))
+    <div class="mb-6 text-sm text-green-600 font-semibold text-center">
+        {{ session('status') }}
+    </div>
+@endif
+
     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-10">
 
         <!-- 左カラム -->
@@ -34,6 +40,10 @@
                     <option value="konbini">コンビニ払い</option>
                     <option value="card">クレジットカード</option>
                 </select>
+                @error('payment_method')
+    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+@enderror
+
 
                 </div>
             </div>
@@ -70,7 +80,7 @@
                 <!-- 支払い方法 -->
                 <div class="flex justify-between items-center px-4 py-10 text-sm">
                     <span class="text-gray-800">支払い方法</span>
-                    <span class="text-gray-900" id="selected-payment-method">コンビニ払い</span>
+                    <span class="text-gray-900" id="selected-payment-method">未選択</span>
                 </div>
 
             </div>

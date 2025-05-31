@@ -101,7 +101,11 @@ Route::middleware(['auth', 'verified', 'require.address'])->group(function () {
 
 
 
-    Route::get('/purchase/address/{item_id}', [OrderController::class, 'editAddress'])->name('orders.editAddress');
+    Route::get('/purchase/address/{item_id}', [OrderController::class, 'editAddress'])->name('orders.editAddress'); //購入時の配送先変更ページ。ここで住所を編集できる。
+
+
+    Route::post('/purchase/address/update', [OrderController::class, 'updateAddress'])
+        ->name('orders.updateAddress');//購入時の配送先更新処理。
 
     // マイページ関連（購入/出品タブはクエリで）
     Route::get('/mypage', [UserController::class, 'show'])->name('users.show');

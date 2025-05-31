@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddressRequest;
+use App\Http\Requests\PurchaseRequest;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Order;
@@ -35,19 +37,17 @@ class OrderController extends Controller
         return view('orders.confirm', compact('item', 'address'));
     }
 
-    public function checkout(Request $request, $item_id)
+    public function checkout(PurchaseRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
         $user = auth()->user();
+
         $paymentMethod = $request->input('payment_method');
 
-        if (!in_array($paymentMethod, ['card', 'konbini'])) {
-            abort(400, '不正な支払い方法です');
-        }
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $session = Session::create([
-            'payment_method_types' => [$paymentMethod], // 今回は card 前提
+            'payment_method_types' => [$paymentMethod],
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'jpy',
@@ -118,13 +118,26 @@ class OrderController extends Controller
 
     public function editAddress($item_id)
     {
-        $user = auth()->user();
-        $address = $user->addresses()->latest()->first();
-        $item = Item::findOrFail($item_id);
-
-        return view('orders.edit_address', compact('item', 'address'));
+        session(['last_item_id' => $item_id]);
+        // $user = auth()->user();
+        $address = auth()->user()->addresses()->latest()->first();
+        return view('addresses/edit', compact(['address',]));
     }
 
+
+    public function updateAddress(AddressRequest $request)
+    {
+
+        $user = auth()->user();
+
+        $user->addresses()->create([
+            'postal_code' => $request->postal_code,
+            'address'     => $request->address,
+            'building'    => $request->building,
+        ]);
+        return redirect()->route('orders.create', ['item_id' => session('last_item_id')])
+            ->with('status', '住所を更新しました');
+    }
 
     /**
      * Store a newly created resource in storage.

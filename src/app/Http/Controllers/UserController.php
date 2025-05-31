@@ -51,10 +51,26 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $user = auth()->user();
+
+        // 出品した商品（例: status問わず全て）
+        $listedItems = $user->items()->with('images')->get();
+
+        // 購入した商品（orders 経由で item を取得）
+        $purchasedItems = $user->orders()
+            ->with(['item.images']) // itemとその画像を取得
+            ->get()
+            ->pluck('item');
+
+        return view('profile.show', [
+            'user' => $user,
+            'listedItems' => $listedItems,
+            'purchasedItems' => $purchasedItems,
+        ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
