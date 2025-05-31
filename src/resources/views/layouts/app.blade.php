@@ -49,7 +49,7 @@
                                 </button>
                             </form>
                             <a href="
-                          {{-- {{ route('mypage') }} --}}
+                          {{ route('users.show') }}
                         "
                                 class="hover:underline">マイページ</a>
                         @endif

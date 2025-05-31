@@ -108,7 +108,7 @@ Route::middleware(['auth', 'verified', 'require.address'])->group(function () {
         ->name('orders.updateAddress');//購入時の配送先更新処理。
 
     // マイページ関連（購入/出品タブはクエリで）
-    Route::get('/mypage', [UserController::class, 'show'])->name('users.show');
+    Route::get('/mypage', [UserController::class, 'show'])->name('users.show'); //ユーザープロフィールページ。ここで出品した商品と購入した商品を表示する。
 
 
 
