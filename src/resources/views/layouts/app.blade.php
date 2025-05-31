@@ -68,7 +68,7 @@
                     @if (!request()->routeIs(['register', 'verification.notice', 'login']))
                         {{-- 出品ボタン --}}
                         <a href="
-                {{-- {{ route('items.create') }} --}}
+                {{ route('items.create') }}
               "
                             class="bg-white text-black px-3 py-1 rounded hover:bg-gray-200">出品</a>
                     @endif

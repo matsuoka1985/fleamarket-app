@@ -16,7 +16,8 @@ class ItemFactory extends Factory
     {
         return [
             //
-            'title' => $this->faker->word(), // ダミー
+            'title' => $this->faker->word(), 
+            'brand_name'  => $this->faker->company(),
             'description' => $this->faker->realText(80),
             'price' => $this->faker->numberBetween(100, 10000),
             'status' => 'on_sale',

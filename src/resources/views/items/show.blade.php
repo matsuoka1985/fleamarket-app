@@ -3,6 +3,11 @@
 
 @section('content')
     <main class="bg-white py-10 px-4 sm:px-6 lg:px-8">
+        @if (session('status'))
+    <div class="mb-4 text-sm text-green-600 font-semibold text-center">
+        {{ session('status') }}
+    </div>
+@endif
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
             <!-- 商品画像 -->
             <div class="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
@@ -85,6 +90,10 @@
                 <!-- 商品の情報 -->
                 <section class="mb-6">
                     <h2 class="text-lg font-bold mb-2">商品の情報</h2>
+                    <div class="mt-2 mb-2">
+                        <span class="font-semibold">ブランド名:</span>
+                        <span class="ml-2">{{ $item->brand_name ?? '' }}</span>
+                    </div>
                     <div class="mb-1">
                         <span class="font-semibold">カテゴリー:</span>
                         @foreach ($item->categories as $category)
