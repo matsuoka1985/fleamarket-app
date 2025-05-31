@@ -17,8 +17,14 @@
                         <label
                             class="inline-block border border-red-500 text-red-500 text-sm px-4 py-2 rounded cursor-pointer">
                             画像を選択する
-                            <input type="file" name="image" class="hidden">
+                            <input type="file" name="image" id="imageInput" class="hidden" accept="image/*">
                         </label>
+
+                        <!-- 画像ファイル名とプレビュー -->
+                        <div id="imagePreview" class="mt-4 space-y-2 hidden">
+                            <p class="text-sm text-gray-700" id="fileName"></p>
+                            <img id="previewImg" class="mx-auto max-h-48 rounded shadow">
+                        </div>
                     </div>
                     @error('image')
                         <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
@@ -83,7 +89,7 @@
                             <label for="brand_name" class="block text-sm font-bold text-gray-700">ブランド名</label>
                             <input type="text" id="brand_name" name="brand_name" value="{{ old('brand_name') }}"
                                 class="w-full border border-black rounded px-3 py-2">
-                                @error('brand_name')
+                            @error('brand_name')
                                 <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
@@ -117,5 +123,29 @@
                 </div>
             </form>
         </div>
+        @push('scripts')
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const input = document.getElementById('imageInput');
+                    const previewContainer = document.getElementById('imagePreview');
+                    const previewImg = document.getElementById('previewImg');
+                    const fileNameText = document.getElementById('fileName');
+
+                    input.addEventListener('change', (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+
+                        fileNameText.textContent = file.name;
+
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            previewImg.src = event.target.result;
+                            previewContainer.classList.remove('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+            </script>
+        @endpush
     </main>
 @endsection

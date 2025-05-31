@@ -5,34 +5,37 @@
         <div class="w-full max-w-md space-y-8">
             <!-- タイトル -->
             <h2 class="text-center text-2xl font-bold text-gray-900">プロフィール設定</h2>
+
             @if (session('status'))
-    <div class="mb-4 text-sm text-green-600 font-semibold text-center">
-        {{ session('status') }}
-    </div>
-@endif
+                <div class="mb-4 text-sm text-green-600 font-semibold text-center">
+                    {{ session('status') }}
+                </div>
+            @endif
 
             <!-- フォーム -->
-            <form method="POST"
-                action="{{ route('profile.update') }}"
-                enctype="multipart/form-data" class="space-y-6">
+            <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 @method('PUT')
 
                 <!-- プロフィール画像 -->
-                <div class="flex items-center space-x-4">
+                <div class="flex flex-col items-center space-y-4">
                     {{-- 丸型プロフィール画像（nullならデフォ画像） --}}
-                    <img src="{{ $user->image ? asset($user->image) : asset('images/default-user.png') }}" alt="プロフィール画像"
-                        class="w-56 h-56 object-cover rounded-full">
+                    <img id="currentProfileImg" src="{{ $user->image ? asset($user->image) : asset('images/default-user.png') }}"
+                        alt="プロフィール画像" class="w-40 h-40 object-cover rounded-full shadow">
 
                     {{-- ファイル選択ボタン --}}
-                    <label
-                        class="cursor-pointer px-3 py-1 border border-red-500 text-red-500 text-sm rounded font-semibold">
+                    <label class="cursor-pointer px-3 py-1 border border-red-500 text-red-500 text-sm rounded font-semibold">
                         画像を選択する
-                        <input type="file" name="image" class="hidden">
+                        <input type="file" name="image" id="imageInput" class="hidden" accept="image/*">
                     </label>
+
+                    {{-- プレビュー表示 --}}
+                    <div id="imagePreview" class="mt-2 space-y-2 hidden">
+                        <p class="text-sm text-gray-700" id="fileName"></p>
+                        <img id="previewImg" class="mx-auto max-h-40 rounded shadow">
+                    </div>
                 </div>
 
-                {{-- エラーメッセージ --}}
                 @error('image')
                     <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                 @enderror
@@ -94,3 +97,28 @@
         </div>
     </main>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('imageInput');
+        const previewContainer = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const fileNameText = document.getElementById('fileName');
+
+        input?.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            fileNameText.textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                previewImg.src = event.target.result;
+                previewContainer.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
+@endpush
