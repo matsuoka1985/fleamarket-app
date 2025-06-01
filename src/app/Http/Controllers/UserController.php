@@ -125,6 +125,7 @@ class UserController extends Controller
             $address->update($addressData);
         } else {
             $user->addresses()->create($addressData);
+            return redirect('/')->with('status', 'プロフィールを登録しました');
         }
 
         return redirect()->route('users.show')->with('status', 'プロフィールを更新しました');

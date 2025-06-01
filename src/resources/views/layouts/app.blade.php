@@ -11,18 +11,17 @@
 </head>
 
 <body>
-    <!-- resources/views/components/header.blade.php -->
-    <header class="bg-black text-white">
+    <header class="bg-black text-white relative z-50">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <div class="flex-shrink-0">
+                <!-- ロゴ -->
+                <div class="">
                     <a href="/">
                         <img class="h-8 w-auto" src="/images/logo.svg" alt="Coachtech Logo">
                     </a>
                 </div>
 
-                <!-- Search Bar -->
+                <!-- 検索フォーム -->
                 @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
                     <div class="hidden md:block flex-grow max-w-2xl mx-4 w-96">
                         <form action="{{ route('items.index') }}" method="GET">
@@ -32,13 +31,10 @@
                             <input type="text" name="keyword" value="{{ request('keyword') }}"
                                 placeholder="なにをお探しですか？" class="w-full px-4 py-2 rounded text-black text-sm h-10">
                         </form>
-
-
                     </div>
                 @endif
 
-
-                <!-- Desktop Menu -->
+                <!-- デスクトップメニュー -->
                 <div class="hidden md:flex items-center space-x-4 flex-shrink-0">
                     @auth
                         @if (!request()->routeIs(['verification.notice']))
@@ -48,28 +44,17 @@
                                     ログアウト
                                 </button>
                             </form>
-                            <a href="
-                          {{ route('users.show') }}
-                        "
-                                class="hover:underline">マイページ</a>
+                            <a href="{{ route('users.show') }}" class="hover:underline">マイページ</a>
                         @endif
                     @else
                         @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
-                            <a href="
-                    {{ route('login') }}
-                  "
-                                class="hover:underline">ログイン</a>
-                            <a href="
-                    {{-- {{ route('mypage') }} --}}
-                  "
-                                class="hover:underline">マイページ</a>
+                            <a href="{{ route('login') }}" class="hover:underline">ログイン</a>
+                            <a href="{{ route('users.show') }}" class="hover:underline">マイページ</a>
                         @endif
                     @endauth
                     @if (!request()->routeIs(['register', 'verification.notice', 'login']))
                         {{-- 出品ボタン --}}
-                        <a href="
-                {{ route('items.create') }}
-              "
+                        <a href="{{ route('items.create') }}"
                             class="bg-white text-black px-3 py-1 rounded hover:bg-gray-200">出品</a>
                     @endif
                 </div>
@@ -90,62 +75,85 @@
         </div>
 
         <!-- Mobile Menu Content -->
-<div id="mobile-menu" class="hidden md:hidden bg-black text-white px-4 py-6 space-y-4">
+        <div id="mobile-menu"
+            class="hidden absolute top-16 left-0 w-full bg-black text-white px-4 py-6 space-y-4 z-50
+                   transition-all duration-300 transform -translate-y-4 opacity-0 pointer-events-none">
 
-    {{-- 検索フォーム --}}
-    @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
-        <form action="{{ route('items.index') }}" method="GET">
-            @if (request('tab'))
-                <input type="hidden" name="tab" value="{{ request('tab') }}">
+            {{-- 検索フォーム --}}
+            @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
+                <form action="{{ route('items.index') }}" method="GET">
+                    @if (request('tab'))
+                        <input type="hidden" name="tab" value="{{ request('tab') }}">
+                    @endif
+                    <input type="text" name="keyword" value="{{ request('keyword') }}"
+                        placeholder="なにをお探しですか？"
+                        class="w-full px-4 py-2 rounded text-black text-sm">
+                </form>
             @endif
-            <input type="text" name="keyword" value="{{ request('keyword') }}"
-                placeholder="なにをお探しですか？"
-                class="w-full px-4 py-2 rounded text-black text-sm">
-        </form>
-    @endif
 
-    {{-- 認証状態別リンク（ボタン風） --}}
-    <div class="flex flex-col space-y-4">
-        @auth
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit"
+            {{-- 認証状態別リンク --}}
+            <div class="flex flex-col space-y-4">
+                @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
+                            ログアウト
+                        </button>
+                    </form>
+                    <a href="{{ route('users.show') }}"
+                        class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
+                        マイページ
+                    </a>
+                @else
+                    <a href="{{ route('login') }}"
+                        class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
+                        ログイン
+                    </a>
+                    <a href="{{ route('users.show') }}"
+                        class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
+                        マイページ
+                    </a>
+                @endauth
+            </div>
+
+            {{-- 出品ボタン --}}
+            @if (!request()->routeIs(['register', 'verification.notice', 'login']))
+                <a href="{{ route('items.create') }}"
                     class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
-                    ログアウト
-                </button>
-            </form>
-            <a href="#" class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
-                マイページ
-            </a>
-        @else
-            <a href="#" class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
-                ログイン
-            </a>
-            <a href="#" class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
-                マイページ
-            </a>
-        @endauth
-    </div>
-
-    {{-- 出品ボタン（統一デザイン） --}}
-    @if (!request()->routeIs(['register', 'verification.notice', 'login']))
-        <a href="#"
-            class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
-            出品
-        </a>
-    @endif
-</div>
-
+                    出品
+                </a>
+            @endif
+        </div>
 
         <script>
-            document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
-                document.getElementById('mobile-menu')?.classList.toggle('hidden');
+            const menuBtn = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+
+            menuBtn?.addEventListener('click', () => {
+                const isVisible = !menu.classList.contains('hidden');
+
+                if (isVisible) {
+                    menu.classList.add('opacity-0', '-translate-y-4');
+                    menu.classList.remove('opacity-100', 'translate-y-0');
+                    setTimeout(() => {
+                        menu.classList.add('hidden');
+                        menu.classList.add('pointer-events-none');
+                    }, 200);
+                } else {
+                    menu.classList.remove('hidden');
+                    menu.classList.remove('pointer-events-none');
+                    setTimeout(() => {
+                        menu.classList.remove('opacity-0', '-translate-y-4');
+                        menu.classList.add('opacity-100', 'translate-y-0');
+                    }, 10);
+                }
             });
         </script>
     </header>
+
     @yield('content')
     @stack('scripts')
-
 </body>
 
 </html>

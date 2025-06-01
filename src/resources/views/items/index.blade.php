@@ -1,8 +1,12 @@
-<!-- resources/views/items/index.blade.php -->
 @extends('layouts.app')
 
 @section('content')
     <main class="bg-white py-6 px-4 sm:px-6 lg:px-8">
+        @if (session('status'))
+    <div class="mb-4 text-sm text-green-600 font-semibold text-center">
+        {{ session('status') }}
+    </div>
+@endif
         <div class="max-w-7xl mx-auto">
             <!-- タブメニュー -->
             <div class="flex border-b border-gray-300 mb-6 text-sm font-bold">

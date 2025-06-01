@@ -42,6 +42,11 @@ class OrderController extends Controller
         $item = Item::findOrFail($item_id);
         $user = auth()->user();
 
+        //自分が出品した商品を自分で買おうとしているユーザーをブロック
+        if ($item->user_id === $user->id) {
+            abort(403, '自分の商品は購入できません');
+        }
+
         $paymentMethod = $request->input('payment_method');
 
         Stripe::setApiKey(config('services.stripe.secret'));
@@ -69,6 +74,7 @@ class OrderController extends Controller
             'publicKey' => config('services.stripe.public_key'),
         ]);
     }
+
 
     public function success(Request $request, $item_id)
     {

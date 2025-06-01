@@ -90,7 +90,7 @@
                 <div>
                     <button type="submit"
                         class="w-full flex justify-center py-2 px-4 bg-red-400 hover:bg-red-500 text-white font-semibold rounded">
-                        更新する
+                        {{ $address ? '更新する' : '登録する' }}
                     </button>
                 </div>
             </form>

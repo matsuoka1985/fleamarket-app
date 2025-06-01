@@ -42,7 +42,8 @@
                                 id="like-button"
                                 data-url="{{ route('likes.toggle', $item->id) }}"
                                 class="w-full h-full flex items-center justify-center text-yellow-400 {{ $item->likes->contains('user_id', auth()->id()) ? 'text-3xl' : 'text-xl' }}">
-                                <span id="like-icon">{{ $item->likes->contains('user_id', auth()->id()) ? '⭐' : '☆' }}</span>
+                                <span id="like-icon"
+                                    class="transition-transform duration-200 ease-out">{{ $item->likes->contains('user_id', auth()->id()) ? '⭐' : '☆' }}</span>
                             </button>
                         @else
                             <a href="{{ route('login') }}" class="block w-full h-full flex items-center justify-center">
@@ -62,11 +63,23 @@
                 </div>
             </div>
 
-            <form method="GET" action="{{ route('orders.create', ['item_id' => $item->id]) }}" class="mb-6">
-                <button type="submit" class="w-full bg-red-500 text-white font-bold py-2 rounded hover:bg-red-600">
-                    購入手続きへ
-                </button>
-            </form>
+            <div class="mb-6">
+                @auth
+                    @if ($item->user_id !== auth()->id())
+                        <form method="GET" action="{{ route('orders.create', ['item_id' => $item->id]) }}">
+                            <button type="submit" class="w-full bg-red-500 text-white font-bold py-2 rounded hover:bg-red-600">
+                                購入手続きへ
+                            </button>
+                        </form>
+                    @endif
+                    {{-- 出品者の場合は非表示 --}}
+                @else
+                    <a href="{{ route('login') }}"
+                       class="block w-full text-center bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 rounded">
+                        購入にはログインが必要です
+                    </a>
+                @endauth
+            </div>
 
             <!-- 商品説明 -->
             <section class="mb-6">
@@ -157,6 +170,13 @@
                 likeButton.classList.toggle('text-3xl', data.liked);
                 likeButton.classList.toggle('text-xl', !data.liked);
                 count.textContent = data.count;
+
+                // アニメーション効果
+                icon.classList.add('scale-125');
+                setTimeout(() => {
+                    icon.classList.remove('scale-125');
+                }, 150);
+
             } catch (e) {
                 console.error('Like toggle failed', e);
             }
