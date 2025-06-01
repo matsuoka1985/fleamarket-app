@@ -4,10 +4,10 @@
 @section('content')
     <main class="bg-white py-10 px-4 sm:px-6 lg:px-8">
         @if (session('status'))
-    <div class="mb-4 text-sm text-green-600 font-semibold text-center">
-        {{ session('status') }}
-    </div>
-@endif
+            <div class="mb-4 text-sm text-green-600 font-semibold text-center">
+                {{ session('status') }}
+            </div>
+        @endif
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
             <!-- 商品画像 -->
             <div class="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
@@ -40,24 +40,26 @@
                     <div class="grid justify-items-center">
                         <div class="relative w-10 h-10 flex items-center justify-center">
                             @auth
-                                <form method="POST" action="{{ route('likes.toggle', $item->id) }}">
-                                    @csrf
-                                    <button type="submit" class="w-full h-full flex items-center justify-center">
-                                        <span class="text-yellow-400 text-3xl">⭐</span>
-                                    </button>
-                                    @unless ($item->likes->contains('user_id', auth()->id()))
-                                        <div class="absolute inset-0 bg-white bg-opacity-70 rounded-full pointer-events-none"></div>
-                                    @endunless
-                                </form>
+                            <form method="POST" action="{{ route('likes.toggle', $item->id) }}">
+                                @csrf
+                                @php
+                                    $liked = $item->likes->contains('user_id', auth()->id());
+                                @endphp
+                                <button type="submit"
+                                    class="w-full h-full flex items-center justify-center text-yellow-400 {{ $liked ? 'text-3xl' : 'text-xl' }}">
+                                    {{ $liked ? '⭐' : '☆' }}
+                                </button>
+                            </form>
+
                             @else
                                 <a href="{{ route('login') }}" class="block w-full h-full flex items-center justify-center">
-                                    <span class="text-yellow-400 text-3xl">⭐</span>
-                                    <div class="absolute inset-0 bg-white bg-opacity-70 rounded-full pointer-events-none"></div>
+                                    <span class="text-gray-400 text-3xl">⭐</span>
                                 </a>
                             @endauth
                         </div>
                         <span class="text-sm text-gray-800 mt-1">{{ $item->likes->count() }}</span>
                     </div>
+
 
                     <!-- コメント -->
                     <div class="grid justify-items-center">

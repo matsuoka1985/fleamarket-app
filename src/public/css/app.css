@@ -499,9 +499,6 @@ video {
 [hidden]:where(:not([hidden="until-found"])) {
   display: none;
 }
-.pointer-events-none {
-  pointer-events: none;
-}
 .fixed {
   position: fixed;
 }
@@ -881,9 +878,6 @@ video {
 }
 .bg-opacity-40 {
   --tw-bg-opacity: 0.4;
-}
-.bg-opacity-70 {
-  --tw-bg-opacity: 0.7;
 }
 .bg-opacity-75 {
   --tw-bg-opacity: 0.75;
