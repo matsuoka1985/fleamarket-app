@@ -20,7 +20,7 @@
 
             @if ($item->status === 'sold')
                 <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                    <span class="text-white text-3xl font-bold">SOLD</span>
+                    <span class="text-white text-3xl font-bold">sold</span>
                 </div>
             @endif
         </div>

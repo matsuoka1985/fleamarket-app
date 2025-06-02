@@ -41,7 +41,7 @@
 
                                 @if ($isSold)
                                     <div class="absolute inset-0 flex items-center justify-center">
-                                        <span class="bg-black bg-opacity-75 text-white text-lg font-bold px-4 py-1 rounded">SOLD</span>
+                                        <span class="bg-black bg-opacity-75 text-white text-lg font-bold px-4 py-1 rounded">sold</span>
                                     </div>
                                 @endif
                             </div>

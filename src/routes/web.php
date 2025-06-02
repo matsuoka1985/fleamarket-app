@@ -31,7 +31,7 @@ Route::get('/test', function () {
 
 
 Route::get('/home', function () {
-    return redirect('/'); // 例: トップページへリダイレクト
+    return redirect('/'); // トップページへリダイレクト
 })->name('home');
 
 
