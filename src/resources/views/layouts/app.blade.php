@@ -22,7 +22,8 @@
                 </div>
 
                 <!-- 検索フォーム -->
-                @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
+                {{-- ログイン画面、サインアップ画面、認証完了のためのメール送信通知画面においては検索バーは表示しない。 --}}
+                @if (!request()->routeIs(['login','register', 'verification.notice']))
                     <div class="hidden md:block flex-grow max-w-2xl mx-4 w-96">
                         <form action="{{ route('items.index') }}" method="GET">
                             @if (request('tab'))
@@ -47,7 +48,7 @@
                             <a href="{{ route('users.show') }}" class="hover:underline">マイページ</a>
                         @endif
                     @else
-                        @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
+                        @if (!request()->routeIs(['login','register', 'verification.notice']))
                             <a href="{{ route('login') }}" class="hover:underline">ログイン</a>
                             <a href="{{ route('users.show') }}" class="hover:underline">マイページ</a>
                         @endif
@@ -60,6 +61,7 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
+                {{-- ハンバーガーメニューはそもそもサインアップ画面、認証メール送信通知画面、ログイン画面においては表示するナビ自体存在しないので不要。 --}}
                 @if (!request()->routeIs(['register', 'verification.notice', 'login']))
                     <div class="md:hidden">
                         <button id="mobile-menu-button" class="text-white focus:outline-none">
@@ -80,7 +82,7 @@
                    transition-all duration-300 transform -translate-y-4 opacity-0 pointer-events-none">
 
             {{-- 検索フォーム --}}
-            @if (!request()->routeIs('login') && !request()->routeIs(['register', 'verification.notice']))
+            @if (!request()->routeIs(['login','register', 'verification.notice']))
                 <form action="{{ route('items.index') }}" method="GET">
                     @if (request('tab'))
                         <input type="hidden" name="tab" value="{{ request('tab') }}">

@@ -63,59 +63,53 @@ Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show
 
 Route::middleware(['auth', 'verified'])->group(
     function () {
-        Route::get('/mypage/profile', [UserController::class, 'edit'])->name('users.edit'); //メール認証まで終わったユーザーが最初にリダイレクトされるページここで必須項目を入力してようやく完全なサインアップ完了。メール認証が済んでいてもここで必須項目を入力していないユーザーはここにリダイレクトされる。また、ユーザーがプロフィール編集する際もこのページを利用する。
+        //メール認証まで終わったユーザーが最初にリダイレクトされるページここで必須項目を入力してようやく完全なサインアップ完了。メール認証が済んでいてもここで必須項目を入力していないユーザーはここにリダイレクトされる。また、ユーザーがプロフィール編集する際もこのページを利用する。
+        Route::get('/mypage/profile', [UserController::class, 'edit'])->name('users.edit');
 
-        Route::put('/mypage/profile', [UserController::class, 'update'])->name('profile.update'); //上の画面におけるバックエンド処理。
+        //上の画面におけるバックエンド処理。
+        Route::put('/mypage/profile', [UserController::class, 'update'])->name('profile.update');
     }
 );
 
 
 
-
-
-Route::post('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
-// Route::get('/checkout/success/{item}', [OrderController::class, 'success'])->name('orders.success');
-Route::get('/checkout/success/{item}', function(){
-    return "成功";
-})->name('orders.success');//仮。後からこれは削除して、上のコメントアウトされている方をきちんと実装する。
-Route::get('/checkout/cancel/{item}', [OrderController::class, 'cancel'])->name('orders.cancel');
-
-
-
-// 認証が必要な機能（中括り）
+// 認証が必要な機能
 Route::middleware(['auth', 'verified', 'require.address'])->group(function () {
 
     // 商品出品ページ
     Route::get('/sell', [ItemController::class, 'create'])->name('items.create');
+    // 商品出品処理
     Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 
-    // 商品購入確認・配送先変更
-    Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('orders.create'); //商品購入画面
+    // 商品購入確認・配送先変更画面
+    Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('orders.create');
 
-    // 決済中継ページ（Session作成 → stripe.redirectToCheckout）
-    Route::post('/checkout/{item_id}', [OrderController::class, 'checkout'])->name('orders.checkout'); //決済中継ページ。ここでStripeのCheckout Sessionを作成して、フロントエンドにリダイレクトする。
+    //決済中継ページ。ここでStripeのCheckout Sessionを作成して、フロントエンドにリダイレクトする。
+    Route::post('/checkout/{item_id}', [OrderController::class, 'checkout'])->name('orders.checkout');
 
-    // 成功後
-    Route::get('/checkout/success/{item}', [OrderController::class, 'success'])->name('orders.success'); //決済成功後の処理。ここで注文情報を保存する。最後にユーザーにthanksページを表示する。
+    //決済成功後の処理。ここで注文情報を保存する。最後にユーザーにthanksページを表示する。
+    Route::get('/checkout/success/{item}', [OrderController::class, 'success'])->name('orders.success');
 
     // キャンセル時
     Route::get('/checkout/cancel/{item}', [OrderController::class, 'cancel'])->name('orders.cancel'); //決済キャンセル時の処理。
 
 
+    //購入時の配送先変更ページ。ここで住所を編集できる。
+    Route::get('/purchase/address/{item_id}', [OrderController::class, 'editAddress'])->name('orders.editAddress');
 
 
-    Route::get('/purchase/address/{item_id}', [OrderController::class, 'editAddress'])->name('orders.editAddress'); //購入時の配送先変更ページ。ここで住所を編集できる。
-
-
+    //購入時の配送先更新処理。
     Route::post('/purchase/address/update', [OrderController::class, 'updateAddress'])
-        ->name('orders.updateAddress');//購入時の配送先更新処理。
+        ->name('orders.updateAddress');
 
-    // マイページ関連（購入/出品タブはクエリで）
-    Route::get('/mypage', [UserController::class, 'show'])->name('users.show'); //ユーザープロフィールページ。ここで出品した商品と購入した商品を表示する。
+    //ユーザープロフィールページ。ここで出品した商品と購入した商品をタブで切り分けて表示
+    Route::get('/mypage', [UserController::class, 'show'])->name('users.show');
 
 
+    //いいね機能
+    Route::post('/likes/{item}', [LikeController::class, 'toggle'])->name('likes.toggle');
 
-    Route::post('/likes/{item}', [LikeController::class, 'toggle'])->name('likes.toggle'); //いいね機能。
 
-    Route::post('/item/{item_id}/comment', [CommentController::class, 'store'])->name('comments.store'); //コメント投稿機能。
+    //コメント投稿機能。
+    Route::post('/item/{item_id}/comment', [CommentController::class, 'store'])->name('comments.store');
 });
