@@ -7,6 +7,11 @@
             {{ session('status') }}
         </div>
     @endif
+    @if(session('error'))
+        <div class="mb-4 text-sm text-red-600 font-semibold text-center">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
         <!-- 商品画像 -->
         <div class="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
@@ -65,14 +70,13 @@
 
             <div class="mb-6">
                 @auth
-                    @if ($item->user_id !== auth()->id())
+                    @if ($item->user_id !== auth()->id() && $item->status !== 'sold')
                         <form method="GET" action="{{ route('orders.create', ['item_id' => $item->id]) }}">
                             <button type="submit" class="w-full bg-red-500 text-white font-bold py-2 rounded hover:bg-red-600">
                                 購入手続きへ
                             </button>
                         </form>
                     @endif
-                    {{-- 出品者の場合は非表示 --}}
                 @else
                     <a href="{{ route('login') }}"
                        class="block w-full text-center bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 rounded">
@@ -126,7 +130,7 @@
                 <form action="{{ route('comments.store', ['item_id' => $item->id]) }}" method="POST" class="mt-4">
                     @csrf
                     <label for="comment" class="block text-sm font-semibold mb-1">商品へのコメント</label>
-                    <textarea id="comment" name="comment" rows="4" class="w-full border border-black rounded">{{ old('comment') }}</textarea>
+                    <textarea id="comment" name="comment" rows="4" class="w-full border border-black rounded"  >{{ old('comment') }}</textarea>
                     @error('comment')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
@@ -172,10 +176,13 @@
                 count.textContent = data.count;
 
                 // アニメーション効果
-                icon.classList.add('scale-125');
-                setTimeout(() => {
-                    icon.classList.remove('scale-125');
-                }, 150);
+                if(data.liked){
+
+                    icon.classList.add('scale-125');
+                    setTimeout(() => {
+                        icon.classList.remove('scale-125');
+                    }, 150);
+                }
 
             } catch (e) {
                 console.error('Like toggle failed', e);

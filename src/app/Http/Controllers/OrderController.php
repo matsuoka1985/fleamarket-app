@@ -9,21 +9,14 @@ use App\Models\Item;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Stripe;
+use Stripe\Refund;
 use Stripe\Checkout\Session;
 
 use Stripe\Checkout\Session as StripeSession;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -32,7 +25,15 @@ class OrderController extends Controller
      */
     public function create($item_id)
     {
+
         $item = Item::with('images')->findOrFail($item_id);
+
+        // すでに売れていたらアクセス拒否
+        if ($item->status === 'sold') {
+            return redirect()->route('items.show', $item->id)
+                ->with('error', 'この商品はすでに購入されています。');
+        }
+
         $address = auth()->user()->addresses()->latest()->first();
         return view('orders.confirm', compact('item', 'address'));
     }
@@ -65,7 +66,8 @@ class OrderController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('orders.success', ['item' => $item->id]) . '?payment_method=' . urlencode($paymentMethod),
+            'success_url' => route('orders.success', ['item' => $item->id])
+                . '?session_id={CHECKOUT_SESSION_ID}&payment_method=' . urlencode($paymentMethod),
             'cancel_url' => route('orders.cancel', ['item' => $item->id]),
         ]);
 
@@ -78,12 +80,33 @@ class OrderController extends Controller
 
     public function success(Request $request, $item_id)
     {
+        $sessionId = $request->query('session_id');
+        if (!$sessionId) {
+            abort(403, 'セッションIDが指定されていません');
+        }
+
+        // Stripeセッションの検証
+        Stripe::setApiKey(config('services.stripe.secret'));
+        $session = StripeSession::retrieve($sessionId);
+
+        if ($session->payment_status !== 'paid') {
+            abort(403, '未払いまたは不正なセッション');
+        }
+
         $user = Auth::user();
         $item = Item::findOrFail($item_id);
 
         // すでに売れていたら重複防止
         if ($item->status === 'sold') {
-            return redirect()->route('items.index')->with('error', 'この商品はすでに購入されています。');
+            // セッションIDから決済Intentを取得（session_idはsuccess_urlのクエリパラメータから取得）
+            $session = \Stripe\Checkout\Session::retrieve($request->query('session_id'));
+            $paymentIntentId = $session->payment_intent;
+
+            // 返金処理
+            Refund::create([
+                'payment_intent' => $paymentIntentId,
+            ]);
+            return redirect()->route('items.show',$item_id)->with('error', 'この商品はすでに購入されています。');
         }
 
         // 商品ステータス更新
@@ -144,61 +167,4 @@ class OrderController extends Controller
         return redirect()->route('orders.create', ['item_id' => session('last_item_id')])
             ->with('status', '住所を更新しました');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 }
