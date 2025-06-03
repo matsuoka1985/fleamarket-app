@@ -97,11 +97,6 @@
                         購入する
                     </button>
                 </form>
-
-
-
-
-
             </div>
         </div>
     </main>
@@ -114,25 +109,9 @@
             select.addEventListener('change', function() {
                 const value = select.value;
                 output.textContent = value === 'card' ? 'クレジットカード' : value === 'konbini' ? 'コンビニ払い' :
-                    '選択してください';
+                    '未選択';
                 hidden.value = value;
             });
         });
     </script>
-
-    {{-- <script src="https://js.stripe.com/v3/"></script>
-<script>
-    const stripe = Stripe("{{ $publicKey }}");
-
-    document.getElementById("checkout-button").addEventListener("click", function () {
-        stripe.redirectToCheckout({
-            sessionId: "{{ $session->id }}"
-        }).then(function (result) {
-            if (result.error) {
-                alert(result.error.message || "リダイレクトに失敗しました。ページをリロードしてください。");
-                window.location.href = "{{ route('items.index') }}";
-            }
-        });
-    });
-</script> --}}
 @endsection

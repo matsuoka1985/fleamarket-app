@@ -81,7 +81,7 @@ Route::middleware(['auth', 'verified', 'require.address'])->group(function () {
     // 商品出品処理
     Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 
-    // 商品購入確認・配送先変更画面
+    // 商品購入確認ページ
     Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('orders.create');
 
     //決済中継ページ。ここでStripeのCheckout Sessionを作成して、フロントエンドにリダイレクトする。
