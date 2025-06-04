@@ -12,6 +12,9 @@
 # 5. .envファイルを作成（以下は全てPHPコンテナの中で実行）
 ```cp .env.example .env```
 
+別途連絡するStripeのAPIキーを作成した.envファイルに追記してください。
+
+
 # 6. composer install
 ```composer install```
 
@@ -39,29 +42,39 @@ MailHogのWeb UIには以下のURLでアクセスできます。
 別途連絡するStripeのAPIキーを作成した.env.testingファイルに追記してください。
 
 テスト用DB作成
+
 まずmysqlコンテナにログイン
+
 ```docker-compose exec mysql bash```
 
 mysqlサーバーにクライアントとしてログイン
+
 ```mysql -u root -p```
 
 パスワードとして```root```を入力
+
 テスト用のDB demo_testを作成
+
 ```CREATE DATABASE demo_test;```
 
 再度phpコンテナにログイン
+
 ```docker-compose exec mysql bash```
 
 マイグレートとシーディング実行
-```php artisan migrate --env=test --seed```
+
+```php artisan migrate --env=testing --seed```
 
 APP_KEYを作成
+
 ```php artisan key:generate --env=testing```
 
 APP_KEY生成に失敗する場合は以下のコマンドを実行
+
 ```php artisan config:clear```
 
 テスト実行
+
 ```php artisan test```
 
 
@@ -70,10 +83,13 @@ APP_KEY生成に失敗する場合は以下のコマンドを実行
 ```cp .env.dusk.local.example .env.dusk.local```
 
 APP_KEYを作成
+
 ```php artisan key:generate --env=dusk.local```
 
 マイグレートとシーディング実行
+
 ```php artisan migrate --env=dusk --seed```
 
 ブラウザテスト実行
+
 ```php artisan dusk```

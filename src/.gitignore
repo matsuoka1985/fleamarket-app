@@ -15,3 +15,15 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+
+# 含めたい画像ファイルのみ指定
+!storage/app/public/images/items/coffeemill.jpg
+!storage/app/public/images/items/hdd.jpg
+!storage/app/public/images/items/laptop.jpg
+!storage/app/public/images/items/makeup.jpg
+!storage/app/public/images/items/mic.jpg
+!storage/app/public/images/items/onions.jpg
+!storage/app/public/images/items/shoes.jpg
+!storage/app/public/images/items/shoulderbag.jpg
+!storage/app/public/images/items/tumbler.jpg
+!storage/app/public/images/items/watch.jpg
