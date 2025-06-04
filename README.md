@@ -35,25 +35,32 @@ MailHogのWeb UIには以下のURLでアクセスできます。
 
 # 12.  PHPUnitテスト実行手順 (.env.testing.exampleをコピーして.env.testingを作成)
 ```cp .env.testing.example .env.testing```
+
 別途連絡するStripeのAPIキーを作成した.env.testingファイルに追記してください。
 
 テスト用DB作成
 まずmysqlコンテナにログイン
 ```docker-compose exec mysql bash```
+
 mysqlサーバーにクライアントとしてログイン
 ```mysql -u root -p```
+
 パスワードとして```root```を入力
 テスト用のDB demo_testを作成
 ```CREATE DATABASE demo_test;```
 
 再度phpコンテナにログイン
 ```docker-compose exec mysql bash```
+
 マイグレートとシーディング実行
 ```php artisan migrate --env=test --seed```
+
 APP_KEYを作成
 ```php artisan key:generate --env=testing```
+
 APP_KEY生成に失敗する場合は以下のコマンドを実行
 ```php artisan config:clear```
+
 テスト実行
 ```php artisan test```
 
@@ -61,9 +68,12 @@ APP_KEY生成に失敗する場合は以下のコマンドを実行
 
 # 13. Dusk テスト実行手順 (.env.dusk.local.example をコピーして.env.dusk.localを作成)
 ```cp .env.dusk.local.example .env.dusk.local```
+
 APP_KEYを作成
 ```php artisan key:generate --env=dusk.local```
+
 マイグレートとシーディング実行
 ```php artisan migrate --env=dusk --seed```
+
 ブラウザテスト実行
 ```php artisan dusk```
