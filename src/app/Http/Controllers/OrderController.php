@@ -35,6 +35,8 @@ class OrderController extends Controller
         }
 
         $address = auth()->user()->addresses()->latest()->first();
+        // $address = auth()->user()->addresses()->orderByDesc('id')->first();
+
         return view('orders.confirm', compact('item', 'address'));
     }
 

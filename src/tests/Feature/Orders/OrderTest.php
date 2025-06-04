@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Items;
+namespace Tests\Feature\Orders;
 
 use App\Models\Address;
 use App\Models\Item;
@@ -114,4 +114,6 @@ class OrderTest extends TestCase
         $response->assertStatus(200)
             ->assertSee($item->title, false); // JSによる非表示あり得るため注意
     }
+
+    
 }

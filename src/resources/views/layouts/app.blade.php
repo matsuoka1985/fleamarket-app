@@ -24,7 +24,8 @@
                 <!-- ログイン画面、サインアップ画面、メール確認画面においては、表示しない -->
                 @if (!request()->routeIs(['login', 'register', 'verification.notice']))
                     <!-- 検索フォーム -->
-                    <div class="hidden md:block flex-grow max-w-2xl mx-4 w-96">
+                    <div class="hidden md:block flex-grow max-w-96 mx-4 ">
+                        {{-- <div class="hidden md:block max-w-96 flex-grow "> --}}
                         <form action="{{ route('items.index') }}" method="GET">
                             @if (request('tab'))
                                 <input type="hidden" name="tab" value="{{ request('tab') }}">
