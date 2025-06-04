@@ -21,23 +21,15 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 */
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-Route::get('/test', function () {
-    return view('test');
-});
+
 
 
 
 Route::get('/home', function () {
-    return redirect('/'); // トップページへリダイレクト
+    return redirect('/');
 })->name('home');
 
 
-Route::get('/testroute', function () {
-    return view('test');
-})->middleware(['auth', 'verified']); //テスト用のルーティング。最後に削除しても問題ない。
 
 Route::get('/register', function () {
     return view('auth.register');
@@ -63,7 +55,7 @@ Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show
 
 Route::middleware(['auth', 'verified'])->group(
     function () {
-        //メール認証まで終わったユーザーが最初にリダイレクトされるページここで必須項目を入力してようやく完全なサインアップ完了。メール認証が済んでいてもここで必須項目を入力していないユーザーはここにリダイレクトされる。また、ユーザーがプロフィール編集する際もこのページを利用する。
+        //メール認証まで終わったユーザーが最初にリダイレクトされるページ。ここで必須項目を入力してようやく完全なサインアップ完了。メール認証が済んでいてもここで必須項目を入力していないユーザーはここにリダイレクトされる。また、ユーザーがプロフィール編集する際もこのページを利用する。
         Route::get('/mypage/profile', [UserController::class, 'edit'])->name('users.edit');
 
         //上の画面におけるバックエンド処理。
@@ -84,7 +76,7 @@ Route::middleware(['auth', 'verified', 'require.address'])->group(function () {
     // 商品購入確認ページ
     Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('orders.create');
 
-    //決済中継ページ。ここでStripeのCheckout Sessionを作成して、フロントエンドにリダイレクトする。
+    //決済中継ページ。ここでStripeのCheckout Sessionを作成して、フロントエンドにリダイレクト。
     Route::post('/checkout/{item_id}', [OrderController::class, 'checkout'])->name('orders.checkout');
 
     //決済成功後の処理。ここで注文情報を保存する。最後にユーザーにthanksページを表示する。
@@ -106,10 +98,10 @@ Route::middleware(['auth', 'verified', 'require.address'])->group(function () {
     Route::get('/mypage', [UserController::class, 'show'])->name('users.show');
 
 
-    //いいね機能
+    //いいね
     Route::post('/likes/{item}', [LikeController::class, 'toggle'])->name('likes.toggle');
 
 
-    //コメント投稿機能。
+    //コメント投稿。
     Route::post('/item/{item_id}/comment', [CommentController::class, 'store'])->name('comments.store');
 });

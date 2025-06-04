@@ -19,9 +19,9 @@
 
                 <!-- プロフィール画像 -->
                 <div class="flex flex-col items-center space-y-4">
-                    {{-- 丸型プロフィール画像（nullならデフォ画像） --}}
+                    {{-- プロフィール画像（nullならデフォルト画像） --}}
                     <img id="currentProfileImg" src="{{ $user->image ? asset($user->image) : asset('images/default-user.png') }}"
-                        alt="プロフィール画像" class="w-40 h-40 object-cover rounded-full shadow">
+                        alt="プロフィール画像" class="w-40 h-40 object-cover ">
 
                     <!-- ファイル選択ボタン -->
                     <label class="cursor-pointer px-3 py-1 border border-red-500 text-red-500 text-sm rounded font-semibold">
