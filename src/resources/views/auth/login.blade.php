@@ -23,7 +23,7 @@
                 </div>
 
                 <!-- パスワード -->
-                <div class="mb-12"> {{-- ← ここで広くとる --}}
+                <div class="mb-12">
                     <label for="password" class="block text-sm font-bold text-gray-700">パスワード</label>
                     <input id="password" name="password" type="password" required
                         class="mt-1 block w-full px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-400

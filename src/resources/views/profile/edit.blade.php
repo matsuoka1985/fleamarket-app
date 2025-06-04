@@ -23,13 +23,13 @@
                     <img id="currentProfileImg" src="{{ $user->image ? asset($user->image) : asset('images/default-user.png') }}"
                         alt="プロフィール画像" class="w-40 h-40 object-cover rounded-full shadow">
 
-                    {{-- ファイル選択ボタン --}}
+                    <!-- ファイル選択ボタン -->
                     <label class="cursor-pointer px-3 py-1 border border-red-500 text-red-500 text-sm rounded font-semibold">
                         画像を選択する
                         <input type="file" name="image" id="imageInput" class="hidden" accept="image/*">
                     </label>
 
-                    {{-- プレビュー表示 --}}
+                    <!-- プレビュー表示 -->
                     <div id="imagePreview" class="mt-2 space-y-2 hidden">
                         <p class="text-sm text-gray-700" id="fileName"></p>
                         <img id="previewImg" class="mx-auto max-h-40 rounded shadow">

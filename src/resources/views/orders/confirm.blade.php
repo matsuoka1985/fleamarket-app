@@ -7,9 +7,7 @@
                 {{ session('status') }}
             </div>
         @endif
-
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-10">
-
             <!-- 左カラム -->
             <div class="space-y-10">
                 <!-- 商品情報 -->
@@ -44,8 +42,6 @@
                         @error('payment_method')
                             <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
                         @enderror
-
-
                     </div>
                 </div>
 
@@ -83,11 +79,9 @@
                         <span class="text-gray-800">支払い方法</span>
                         <span class="text-gray-900" id="selected-payment-method">未選択</span>
                     </div>
-
                 </div>
 
                 <!-- 購入ボタン -->
-
                 <form method="POST" action="{{ route('orders.checkout', $item->id) }}" id="payment-form">
                     @csrf
                     <input type="hidden" name="payment_method" id="payment-method-hidden" value="">

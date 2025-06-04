@@ -41,8 +41,12 @@ services:
         ports:
             - 8080:80
     mailhog:
-       image: mailhog/mailhog
-       container_name: mailhog
-       ports:
+        image: mailhog/mailhog
+        container_name: mailhog
+        ports:
             - "8025:8025" # GUI
             - "1025:1025" # SMTP
+    selenium:
+        image: seleniarm/standalone-chromium:latest
+        ports:
+            - "9515:4444" # 注意: Seleniumは内部で 4444 ポートで待ち受け

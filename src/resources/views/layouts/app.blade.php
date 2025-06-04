@@ -21,9 +21,9 @@
                     </a>
                 </div>
 
-                <!-- 検索フォーム -->
-                {{-- ログイン画面、サインアップ画面、認証完了のためのメール送信通知画面においては検索バーは表示しない。 --}}
-                @if (!request()->routeIs(['login','register', 'verification.notice']))
+                <!-- ログイン画面、サインアップ画面、メール確認画面においては、表示しない -->
+                @if (!request()->routeIs(['login', 'register', 'verification.notice']))
+                    <!-- 検索フォーム -->
                     <div class="hidden md:block flex-grow max-w-2xl mx-4 w-96">
                         <form action="{{ route('items.index') }}" method="GET">
                             @if (request('tab'))
@@ -33,36 +33,24 @@
                                 placeholder="なにをお探しですか？" class="w-full px-4 py-2 rounded text-black text-sm h-10">
                         </form>
                     </div>
-                @endif
-
-                <!-- デスクトップメニュー -->
-                <div class="hidden md:flex items-center space-x-4 flex-shrink-0">
-                    @auth
-                        @if (!request()->routeIs(['verification.notice']))
+                    <!-- デスクトップメニュー -->
+                    <div class="hidden md:flex items-center space-x-4 flex-shrink-0">
+                        @auth
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="hover:underline bg-transparent text-white">
                                     ログアウト
                                 </button>
                             </form>
-                            <a href="{{ route('users.show') }}" class="hover:underline">マイページ</a>
-                        @endif
-                    @else
-                        @if (!request()->routeIs(['login','register', 'verification.notice']))
+                        @else
                             <a href="{{ route('login') }}" class="hover:underline">ログイン</a>
-                            <a href="{{ route('users.show') }}" class="hover:underline">マイページ</a>
-                        @endif
-                    @endauth
-                    @if (!request()->routeIs(['register', 'verification.notice', 'login']))
+                        @endauth
+                        <a href="{{ route('users.show') }}" class="hover:underline">マイページ</a>
                         {{-- 出品ボタン --}}
                         <a href="{{ route('items.create') }}"
                             class="bg-white text-black px-3 py-1 rounded hover:bg-gray-200">出品</a>
-                    @endif
-                </div>
-
-                <!-- Mobile Menu Button -->
-                {{-- ハンバーガーメニューはそもそもサインアップ画面、認証メール送信通知画面、ログイン画面においては表示するナビ自体存在しないので不要。 --}}
-                @if (!request()->routeIs(['register', 'verification.notice', 'login']))
+                    </div>
+                    <!-- ハンバーガーメニュー -->
                     <div class="md:hidden">
                         <button id="mobile-menu-button" class="text-white focus:outline-none">
                             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -73,59 +61,51 @@
                         </button>
                     </div>
                 @endif
+
+
             </div>
         </div>
 
-        <!-- Mobile Menu Content -->
+        <!-- モバイル用ヘッダー -->
         <div id="mobile-menu"
             class="hidden absolute top-16 left-0 w-full bg-black text-white px-4 py-6 space-y-4 z-50
                    transition-all duration-300 transform -translate-y-4 opacity-0 pointer-events-none">
-
-            {{-- 検索フォーム --}}
-            @if (!request()->routeIs(['login','register', 'verification.notice']))
+            <!-- ログイン画面、サインアップ画面、メール確認画面においては、表示しない -->
+            @if (!request()->routeIs(['login', 'register', 'verification.notice']))
+                <!-- 検索フォーム -->
                 <form action="{{ route('items.index') }}" method="GET">
                     @if (request('tab'))
                         <input type="hidden" name="tab" value="{{ request('tab') }}">
                     @endif
-                    <input type="text" name="keyword" value="{{ request('keyword') }}"
-                        placeholder="なにをお探しですか？"
+                    <input type="text" name="keyword" value="{{ request('keyword') }}" placeholder="なにをお探しですか？"
                         class="w-full px-4 py-2 rounded text-black text-sm">
                 </form>
-            @endif
-
-            {{-- 認証状態別リンク --}}
-            <div class="flex flex-col space-y-4">
-                @auth
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
+                <div class="flex flex-col space-y-4">
+                    @auth
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
+                                ログアウト
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}"
                             class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
-                            ログアウト
-                        </button>
-                    </form>
+                            ログイン
+                        </a>
+                    @endauth
                     <a href="{{ route('users.show') }}"
                         class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
                         マイページ
                     </a>
-                @else
-                    <a href="{{ route('login') }}"
-                        class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
-                        ログイン
-                    </a>
-                    <a href="{{ route('users.show') }}"
-                        class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
-                        マイページ
-                    </a>
-                @endauth
-            </div>
+                </div>
 
-            {{-- 出品ボタン --}}
-            @if (!request()->routeIs(['register', 'verification.notice', 'login']))
+                {{-- 出品ボタン --}}
                 <a href="{{ route('items.create') }}"
-                    class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">
-                    出品
-                </a>
+                    class="block w-full text-center bg-white text-black px-3 py-2 rounded hover:bg-gray-200">出品</a>
             @endif
+
         </div>
 
         <script>

@@ -29,3 +29,6 @@ npm install
 
 # 11. 開発用ビルド
 npm run dev
+
+# 12. Dusk テスト実行手順 (`.env.dusk.local.example` をコピーして `.env.dusk.local` を作成)
+cp .env.dusk.local.example .env.dusk.local
