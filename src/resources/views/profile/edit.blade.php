@@ -13,12 +13,12 @@
             @endif
 
             <!-- フォーム -->
-            <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-6">
+            <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-6 ">
                 @csrf
                 @method('PUT')
 
                 <!-- プロフィール画像 -->
-                <div class="flex flex-col items-center space-y-4">
+                <div class="flex flex-col items-center space-y-4 rounded-full">
                     {{-- プロフィール画像（nullならデフォルト画像） --}}
                     <img id="currentProfileImg" src="{{ $user->image ? asset($user->image) : asset('images/default-user.png') }}"
                         alt="プロフィール画像" class="w-40 h-40 object-cover ">

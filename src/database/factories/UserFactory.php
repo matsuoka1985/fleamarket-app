@@ -24,7 +24,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => Hash::make('password'), // すべてのユーザのログインパス
-            'image' => 'images/users/default.jpg', // 仮の画像パス
+            'image' => '/storage/images/users/default.jpg',
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ];

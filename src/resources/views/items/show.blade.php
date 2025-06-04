@@ -117,8 +117,27 @@
                     @foreach ($item->comments as $comment)
                         <div class="mb-4">
                             <div class="flex items-center space-x-2 mb-1">
-                                <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
-                                <p class="text-sm font-semibold">{{ $comment->user->name ?? '匿名ユーザー' }}</p>
+                                @php
+                                    $imagePath = public_path($comment->user->image ?? '');
+                                    $hasImage = !empty($comment->user->image) && file_exists($imagePath);
+                                @endphp
+
+                                <div
+                                    class="w-8 h-8 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center">
+                                    @if ($hasImage)
+                                        <img src="{{ asset($comment->user->image) }}" alt="{{ $comment->user->name }}"
+                                            class="w-full h-full object-cover object-center">
+                                    @else
+                                        <span class="text-white text-sm font-bold">
+                                            {{ mb_substr($comment->user->name, 0, 1, 'UTF-8') }}
+                                        </span>
+                                    @endif
+                                </div>
+
+
+
+
+                                <p class="text-sm font-semibold">{{ $comment->user->name ?? '' }}</p>
                             </div>
                             <p class="text-sm text-gray-700 bg-gray-200 rounded px-4 py-2 inline-block">
                                 {{ $comment->content }}

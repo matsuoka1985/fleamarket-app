@@ -12,9 +12,9 @@
         <div class="mb-8">
             <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between">
                 <div class="flex items-center space-x-6">
-                    <div class="w-24 h-24 sm:w-28 sm:h-28  overflow-hidden bg-gray-200">
+                    <div class="w-24 h-24 sm:w-28 sm:h-28  overflow-hidden bg-gray-200 rounded-full">
                         <img src="{{ $user->image ? asset($user->image) : asset('images/default-user.png') }}"
-                             alt="プロフィール画像" class="object-cover w-full h-full">
+                             alt="プロフィール画像" class="object-cover w-full h-full object-center">
                     </div>
                     <div class="text-xl font-bold text-gray-800">{{ $user->name }}</div>
                 </div>
