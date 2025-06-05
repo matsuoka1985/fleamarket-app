@@ -28,7 +28,6 @@ class CreateNewUser implements CreatesNewUsers
             'password.min' => 'パスワードは8文字以上で入力してください',
             'password.confirmed' => 'パスワードと一致しません',
         ])->validate();
-
         return User::create([
             'name'     => $input['name'],
             'email'    => $input['email'],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -13,14 +14,16 @@ use Illuminate\Validation\Rules;
 //自作クラス
 class RegisteredUserController extends Controller
 {
-    public function store(Request $request)
+    public function store(RegisterRequest $request)
     {
         // バリデーション
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        // $request->validate(
+        //     [
+        //     'name' => ['required', 'string', 'max:255'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        //     'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        // ]
+    // );
 
         // ユーザー作成
         $user = User::create([
