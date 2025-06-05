@@ -29,7 +29,7 @@
 
                 <div id="imagePreview" class="mt-2 space-y-2 hidden">
                     <p class="text-sm text-gray-700" id="fileName"></p>
-                    <img id="previewImg" class="mx-auto max-h-40 rounded-full " />
+                    <img id="previewImg" class="mx-auto max-h-40 " />
                 </div>
             </div>
 

@@ -70,12 +70,10 @@
 
                     @auth
                         @if ($item->user_id !== auth()->id() && $item->status !== 'sold')
-                            <form method="GET" action="{{ route('orders.create', ['item_id' => $item->id]) }}">
-                                <button type="submit"
-                                    class="w-full bg-red-500 text-white font-bold py-2 rounded hover:bg-red-600">
-                                    購入手続きへ
-                                </button>
-                            </form>
+                            <a href="{{ route('orders.create', ['item_id' => $item->id]) }}"
+                                class="block w-full bg-red-500 text-white font-bold py-2 rounded hover:bg-red-600 text-center">
+                                購入手続きへ
+                            </a>
                         @endif
                     @else
                         <a href="{{ route('login') }}"
@@ -83,6 +81,7 @@
                             購入にはログインが必要です
                         </a>
                     @endauth
+
                 </div>
 
                 <!-- 商品説明 -->
@@ -150,11 +149,8 @@
                         @csrf
                         <label for="comment" class="block text-sm font-semibold mb-1">商品へのコメント</label>
                         {{-- <textarea id="comment" name="comment" rows="4" class="w-full border border-black rounded">{{ old('comment') }}</textarea> --}}
-                        <textarea
-                        id="comment"
-                        name="comment"
-                        class="h-40 w-full border border-black rounded px-3 py-2 text-base leading-normal focus:outline-none focus:ring-2 focus:ring-black-400"
-                    >{{ old('comment') }}</textarea>
+                        <textarea id="comment" name="comment"
+                            class="h-40 w-full border border-black rounded px-3 py-2 text-base leading-normal focus:outline-none focus:ring-2 focus:ring-black-400">{{ old('comment') }}</textarea>
 
 
                         @error('comment')

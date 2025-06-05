@@ -8,6 +8,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\LoginController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +41,11 @@ Route::get('/register', function () {
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest'])
     ->name('register');
+
+//自作上書きルート
+Route::post('/login', [LoginController::class, 'store'])
+    ->middleware(['guest'])
+    ->name('login');
 
 //自作上書きルート
 Route::get('/email/verify/{id}/{hash}', EmailVerificationController::class)

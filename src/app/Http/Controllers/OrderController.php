@@ -50,6 +50,13 @@ class OrderController extends Controller
             abort(403, '自分の商品は購入できません');
         }
 
+        // すでに売れている商品は購入不可
+        if ($item->status === 'sold') {
+            return redirect()
+                ->route('items.show', $item->id)
+                ->with('error', 'この商品はすでに購入されています。');
+        }
+
         $paymentMethod = $request->input('payment_method');
 
         Stripe::setApiKey(config('services.stripe.secret'));
@@ -108,7 +115,7 @@ class OrderController extends Controller
             Refund::create([
                 'payment_intent' => $paymentIntentId,
             ]);
-            return redirect()->route('items.show',$item_id)->with('error', 'この商品はすでに購入されています。');
+            return redirect()->route('items.show', $item_id)->with('error', 'この商品はすでに購入されています。');
         }
 
         // 商品ステータス更新
