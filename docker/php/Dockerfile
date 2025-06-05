@@ -1,45 +1,60 @@
-FROM php:7.4.9-fpm
-
-COPY php.ini /usr/local/etc/php/
-
-RUN apt update \
-  && apt install -y curl gnupg2 ca-certificates lsb-release \
-  && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-  && apt install -y nodejs \
-  && apt install -y default-mysql-client zlib1g-dev libzip-dev unzip \
-  && docker-php-ext-install pdo_mysql zip
-
-# ここから Dusk/Chrome 用の追加パッケージ
-RUN apt update && apt install -y \
-  chromium \
-  chromium-driver \
-  fonts-liberation \
-  libappindicator3-1 \
-  libasound2 \
-  libatk-bridge2.0-0 \
-  libatk1.0-0 \
-  libcups2 \
-  libdbus-1-3 \
-  libgdk-pixbuf2.0-0 \
-  libnspr4 \
-  libnss3 \
-  libx11-xcb1 \
-  libxcomposite1 \
-  libxdamage1 \
-  libxrandr2 \
-  xdg-utils \
-  --no-install-recommends \
-  && rm -rf /var/lib/apt/lists/*
-# ここまで Chrome の依存
-
-
-
-
-
-
-# Composer
-RUN curl -sS https://getcomposer.org/installer | php \
-  && mv composer.phar /usr/local/bin/composer \
-  && composer self-update
+# ──────────────────────────────
+# Stage 0 : build
+# ──────────────────────────────
+FROM php:8.1-fpm AS build
 
 WORKDIR /var/www
+
+# 依存パッケージ
+RUN apt-get update -y && \
+  apt-get install -y --no-install-recommends \
+  git unzip zlib1g-dev libzip-dev \
+  curl ca-certificates gnupg lsb-release \
+  default-mysql-client \
+  && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+  && apt-get install -y nodejs
+
+RUN docker-php-ext-install pdo_mysql zip
+
+# Composer
+RUN curl -sS https://getcomposer.org/installer | php -- \
+  --install-dir=/usr/local/bin --filename=composer
+
+# ──────────────────────────────
+# ① **まず全ソースをコピー**
+#    → App\Console\Kernel などが存在する状態で
+#      composer install を実行できる
+# ──────────────────────────────
+COPY src .
+
+# PHP 依存（dev も入れる）
+RUN composer install --prefer-dist --optimize-autoloader --no-interaction
+
+# Node 依存 & ビルド
+RUN npm ci && npm run production
+
+# ──────────────────────────────
+# Stage 1 : runtime
+# ──────────────────────────────
+FROM php:8.1-fpm AS runtime
+
+WORKDIR /var/www
+
+RUN apt-get update -y && \
+  apt-get install -y --no-install-recommends \
+  zlib1g-dev libzip-dev default-mysql-client && \
+  docker-php-ext-install pdo_mysql zip && \
+  rm -rf /var/lib/apt/lists/*
+
+# php.ini
+COPY docker/php/php.ini /usr/local/etc/php/php.ini
+
+# build 産物
+COPY --from=build /var/www /var/www
+
+# Entrypoint
+COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+
+CMD ["php-fpm"]
