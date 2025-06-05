@@ -119,19 +119,26 @@
                     menu.classList.add('opacity-0', '-translate-y-4');
                     menu.classList.remove('opacity-100', 'translate-y-0');
                     setTimeout(() => {
-                        menu.classList.add('hidden');
-                        menu.classList.add('pointer-events-none');
+                        menu.classList.add('hidden', 'pointer-events-none');
                     }, 200);
                 } else {
-                    menu.classList.remove('hidden');
-                    menu.classList.remove('pointer-events-none');
+                    menu.classList.remove('hidden', 'pointer-events-none');
                     setTimeout(() => {
                         menu.classList.remove('opacity-0', '-translate-y-4');
                         menu.classList.add('opacity-100', 'translate-y-0');
                     }, 10);
                 }
             });
+
+            // ブラウザ幅が広くなった際にメニューを非表示にする
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 768) {
+                    menu.classList.add('hidden', 'opacity-0', '-translate-y-4', 'pointer-events-none');
+                    menu.classList.remove('opacity-100', 'translate-y-0');
+                }
+            });
         </script>
+
     </header>
 
     @yield('content')

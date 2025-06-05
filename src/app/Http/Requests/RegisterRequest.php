@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest //削除しても問題ない。
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,8 +33,8 @@ class RegisterRequest extends FormRequest //削除しても問題ない。
     public function messages(): array
     {
         return [
-            'name.required' => 'お名前を入力してください',
-            'email.required' => 'メールアドレスを入力してください',
+            'name.required' => 'てすとお名前を入力してください',
+            'email.required' => 'てすとメールアドレスを入力してください',
             'email.email' => '有効なメールアドレスを入力してください',
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'パスワードは8文字以上で入力してください',

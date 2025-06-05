@@ -725,6 +725,9 @@ video {
 .cursor-pointer {
   cursor: pointer;
 }
+.resize {
+  resize: both;
+}
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -1011,6 +1014,10 @@ video {
   font-size: 0.75rem;
   line-height: 1rem;
 }
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
 .font-bold {
   font-weight: 700;
 }
@@ -1025,6 +1032,9 @@ video {
 }
 .leading-relaxed {
   line-height: 1.625;
+}
+.leading-normal {
+  line-height: 1.5;
 }
 .text-black {
   --tw-text-opacity: 1;

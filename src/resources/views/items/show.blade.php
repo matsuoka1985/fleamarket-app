@@ -67,6 +67,7 @@
                 </div>
 
                 <div class="mb-6">
+
                     @auth
                         @if ($item->user_id !== auth()->id() && $item->status !== 'sold')
                             <form method="GET" action="{{ route('orders.create', ['item_id' => $item->id]) }}">
@@ -148,7 +149,14 @@
                     <form action="{{ route('comments.store', ['item_id' => $item->id]) }}" method="POST" class="mt-4">
                         @csrf
                         <label for="comment" class="block text-sm font-semibold mb-1">商品へのコメント</label>
-                        <textarea id="comment" name="comment" rows="4" class="w-full border border-black rounded">{{ old('comment') }}</textarea>
+                        {{-- <textarea id="comment" name="comment" rows="4" class="w-full border border-black rounded">{{ old('comment') }}</textarea> --}}
+                        <textarea
+                        id="comment"
+                        name="comment"
+                        class="h-40 w-full border border-black rounded px-3 py-2 text-base leading-normal focus:outline-none focus:ring-2 focus:ring-black-400"
+                    >{{ old('comment') }}</textarea>
+
+
                         @error('comment')
                             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                         @enderror
