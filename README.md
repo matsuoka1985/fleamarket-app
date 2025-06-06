@@ -1,3 +1,8 @@
+# アプリケーション名
+
+フリマアプリ
+
+-----
 
 
 # セットアップ手順
@@ -24,8 +29,9 @@ cd fleamarket-app
 docker compose up -d --build
 ```
 
-**🚀 起動完了の確認:**
-PHPコンテナがリクエストを受け付けられる状態になると、以下のコマンドの出力に `NOTICE: ready to handle connections` と表示されます。この表示が出たら、アプリケーションの起動が完了し、ブラウザからアクセスできる状態です。
+** 起動完了の確認:**
+PHPコンテナがリクエストを受け付けられる状態になると、以下のコマンドの出力に `NOTICE: ready to handle connections` と表示されます。
+この表示が出たら、アプリケーションの起動が完了し、ブラウザからアクセスできる状態です。この時点でcomposer installによるvendorディレクトリの作成、.envファイルの作成、APP_KEYの生成、マイグレーション、シーディングが完了しています。
 
 ```bash
 docker compose logs -f php
@@ -58,6 +64,7 @@ php artisan dusk
 
   * **Laravel アプリケーション**: [http://localhost:80](https://www.google.com/search?q=http://localhost:80)
   * **MailHog (開発用メール UI)**: [http://localhost:8025](https://www.google.com/search?q=http://localhost:8025)
+  * **phpMyAdmin (データベース管理GUIツール UI)**: [http://localhost:8080](https://www.google.com/search?q=http://localhost:8080)
 
 ### PHPコンテナへのアクセス
 
@@ -72,7 +79,18 @@ docker compose exec php bash
 
 `.env` ファイルにStripeのAPIキーを追記してください。キーは別途共有されます。
 
+---
+
+## 使用技術(実行環境)
+
+* PHP 7.4.9
+* Laravel 8.83.29
+* MySQL 8.0.37
+* nginx 1.21.1
+
+---
+
+## ER図
 
 
-
------
+![ER図](erd.png)

@@ -110,10 +110,10 @@ class OrderTest extends TestCase
             ->assertStatus(200);
 
         // プロフィール画面で購入商品が表示されていること
-        $response = $this->actingAs($buyer)->get(route('users.show'));
+        $response = $this->actingAs($buyer)->get(route('users.show',['page' => 'buy']));
         $response->assertStatus(200)
-            ->assertSee($item->title, false); // JSによる非表示あり得るため注意
+            ->assertSee($item->title, false);
     }
 
-    
+
 }

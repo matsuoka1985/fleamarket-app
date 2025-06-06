@@ -39,7 +39,7 @@ class MylistTest extends TestCase
             'item_id' => $likedItem->id,
         ]);
 
-        $response = $this->actingAs($user)->get(route('items.index', ['tab' => 'mylist']));
+        $response = $this->actingAs($user)->get(route('items.index', ['page' => 'mylist']));
 
         $response->assertSee('Liked Item');
         $response->assertDontSee('Unliked Item');
@@ -66,8 +66,8 @@ class MylistTest extends TestCase
             'item_id' => $purchasedItem->id,
         ]);
 
-        // マイリストページ（?tab=mylist）へアクセス
-        $response = $this->actingAs($user)->get(route('items.index', ['tab' => 'mylist']));
+        // マイリストページ（?page=mylist）へアクセス
+        $response = $this->actingAs($user)->get(route('items.index', ['page' => 'mylist']));
 
         // 商品タイトルが表示されていること
         $response->assertSee('Purchased Item');
@@ -97,7 +97,7 @@ class MylistTest extends TestCase
         ]);
 
         // マイリストページにアクセス
-        $response = $this->actingAs($user)->get(route('items.index', ['tab' => 'mylist']));
+        $response = $this->actingAs($user)->get(route('items.index', ['page' => 'mylist']));
 
         // 自分が出品した商品は表示されない（タイトルが含まれないことを検証）
         $response->assertDontSee('Self Posted Item');
@@ -108,8 +108,8 @@ class MylistTest extends TestCase
      */
     public function guests_are_redirected_when_accessing_mylist_tab()
     {
-        // 未ログイン状態で ?tab=mylist にアクセス
-        $response = $this->get(route('items.index', ['tab' => 'mylist']));
+        // 未ログイン状態で ?page=mylist にアクセス
+        $response = $this->get(route('items.index', ['page' => 'mylist']));
 
         // ログイン画面にリダイレクトされることを確認
         $response->assertRedirect(route('login'));

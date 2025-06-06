@@ -51,25 +51,36 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Request $request)
     {
         $user = auth()->user();
 
-        // 出品した商品（例: status問わず全て）
-        $listedItems = $user->items()->with('images')->get();
+        // クエリパラメータに基づくページの状態
+        $page = $request->query('page', 'sell'); // デフォルトは 'sell'
 
-        // 購入した商品（orders 経由で item を取得）
-        $purchasedItems = $user->orders()
-            ->with(['item.images']) // itemとその画像を取得
-            ->get()
-            ->pluck('item');
+        $listedItems = collect();
+        $purchasedItems = collect();
+
+        if ($page === 'sell') {
+            $listedItems = $user->items()->with('images')->get();
+        } else {
+            $purchasedItems = $user->orders()
+                ->with(['item.images'])
+                ->get()
+                ->pluck('item');
+
+
+
+        }
 
         return view('profile.show', [
             'user' => $user,
             'listedItems' => $listedItems,
             'purchasedItems' => $purchasedItems,
+            'page' => $page,
         ]);
     }
+
 
 
     /**
@@ -82,7 +93,8 @@ class UserController extends Controller
     {
         //
         $user = Auth::user();
-        $address = $user->addresses()->first();
+        $address = $user->addresses()->latest('created_at')->first();
+
 
         if (!$address) {
             // 初回登録（createフォームとして利用）
@@ -142,16 +154,4 @@ class UserController extends Controller
         return redirect()->route('users.show')->with('status', 'プロフィールを更新しました');
     }
 
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
