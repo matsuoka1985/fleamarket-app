@@ -7,6 +7,7 @@ RUN apt update \
   && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
   && apt install -y nodejs \
   && apt install -y default-mysql-client zlib1g-dev libzip-dev unzip \
+  && apt install -y netcat-openbsd \
   && docker-php-ext-install pdo_mysql zip
 
 # ここから Dusk/Chrome 用の追加パッケージ
@@ -39,4 +40,10 @@ RUN curl -sS https://getcomposer.org/installer | php \
   && mv composer.phar /usr/local/bin/composer \
   && composer self-update
 
+# ─ entrypoint ─────────────────────────────
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 WORKDIR /var/www
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["php-fpm"]

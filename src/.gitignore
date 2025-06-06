@@ -7,6 +7,8 @@
 .env.testing
 .env.dusk.local
 .env.backup
+.seeded
+.seeded_testing
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
