@@ -95,33 +95,3 @@ docker compose exec php bash
 
 ![ER図](erd.png)
 
-```mermaid
-erDiagram
-    users ||--o{ addresses : has
-    users ||--o{ items : owns
-    users ||--o{ orders : places
-    users ||--o{ comments : writes
-    users ||--o{ likes : gives
-
-    items ||--o{ item_images : has
-    items ||--o{ comments : receives
-    items ||--o{ likes : receives
-    items ||--o{ category_item : belongs_to
-    items ||--o{ orders : included_in
-
-    categories ||--o{ category_item : includes
-
-    addresses ||--o{ orders : used_for
-
-    orders ||--|| items : contains
-    orders ||--|| users : by
-    orders ||--|| addresses : ships_to
-
-    comments ||--|| users : from
-    comments ||--|| items : on
-
-    likes ||--|| users : by
-    likes ||--|| items : on
-
-    category_item ||--|| categories : links
-    category_item ||--|| items : links

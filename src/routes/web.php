@@ -32,7 +32,6 @@ Route::get('/home', function () {
 })->name('home');
 
 
-
 Route::get('/register', function () {
     return view('auth.register');
 })->middleware(['guest'])->name('register');

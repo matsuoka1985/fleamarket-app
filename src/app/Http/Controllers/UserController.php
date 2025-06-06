@@ -14,36 +14,6 @@ use App\Http\Requests\ProfileRequest;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -68,9 +38,6 @@ class UserController extends Controller
                 ->with(['item.images'])
                 ->get()
                 ->pluck('item');
-
-
-
         }
 
         return view('profile.show', [
@@ -94,7 +61,6 @@ class UserController extends Controller
         //
         $user = Auth::user();
         $address = $user->addresses()->latest('created_at')->first();
-
 
         if (!$address) {
             // 初回登録（createフォームとして利用）

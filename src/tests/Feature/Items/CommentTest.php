@@ -5,7 +5,6 @@ namespace Tests\Feature\Items;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Item;
-use App\Models\Comment;
 use App\Models\Address;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

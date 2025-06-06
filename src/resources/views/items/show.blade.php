@@ -172,6 +172,7 @@
 
 @auth
     @push('scripts')
+    {{-- いいねを非同期で送信 --}}
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const likeButton = document.getElementById('like-button');
@@ -216,6 +217,7 @@
                 });
             });
         </script>
+        {{-- コメント二重送信防止機能 --}}
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const form = document.getElementById("comment-form");
