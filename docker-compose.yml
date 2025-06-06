@@ -17,7 +17,7 @@ services:
       - ./src:/var/www/
 
   mysql:
-    image: mysql:8.0.26
+    image: mysql:8.0.37
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laravel_db
@@ -31,7 +31,7 @@ services:
 
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:latest
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=mysql
@@ -42,7 +42,7 @@ services:
     ports:
       - 8080:80
   mailhog:
-    image: mailhog/mailhog
+    image: mailhog/mailhog:v1.0.1
     container_name: mailhog
     ports:
       - "8025:8025" # GUI
