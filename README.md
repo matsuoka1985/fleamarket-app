@@ -62,9 +62,9 @@ php artisan dusk
 
 全てのコンテナが起動し、アプリケーションのセットアップが完了すると、以下のURLで各サービスにアクセスできます。
 
-  * **Laravel アプリケーション**: [http://localhost:80](https://www.google.com/search?q=http://localhost:80)
-  * **MailHog (開発用メール UI)**: [http://localhost:8025](https://www.google.com/search?q=http://localhost:8025)
-  * **phpMyAdmin (データベース管理GUIツール UI)**: [http://localhost:8080](https://www.google.com/search?q=http://localhost:8080)
+  * **Laravel アプリケーション**: [http://localhost:80](http://localhost:80)
+  * **MailHog (開発用メール UI)**: [http://localhost:8025](http://localhost:8025)
+  * **phpMyAdmin (データベース管理GUIツール UI)**: [http://localhost:8080](http://localhost:8080)
 
 ### PHPコンテナへのアクセス
 
@@ -94,3 +94,34 @@ docker compose exec php bash
 
 
 ![ER図](erd.png)
+
+```mermaid
+erDiagram
+    users ||--o{ addresses : has
+    users ||--o{ items : owns
+    users ||--o{ orders : places
+    users ||--o{ comments : writes
+    users ||--o{ likes : gives
+
+    items ||--o{ item_images : has
+    items ||--o{ comments : receives
+    items ||--o{ likes : receives
+    items ||--o{ category_item : belongs_to
+    items ||--o{ orders : included_in
+
+    categories ||--o{ category_item : includes
+
+    addresses ||--o{ orders : used_for
+
+    orders ||--|| items : contains
+    orders ||--|| users : by
+    orders ||--|| addresses : ships_to
+
+    comments ||--|| users : from
+    comments ||--|| items : on
+
+    likes ||--|| users : by
+    likes ||--|| items : on
+
+    category_item ||--|| categories : links
+    category_item ||--|| items : links
