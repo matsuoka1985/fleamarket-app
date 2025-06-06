@@ -26,7 +26,7 @@ class ItemController extends Controller
             $query->where('user_id', '!=', auth()->id());
         }
 
-        if ($request->query('tab') === 'mylist') {
+        if ($request->query('page') === 'mylist') {
             if (!auth()->check()) {
                 return redirect()->route('login');
             }

@@ -6,13 +6,14 @@
     <div class="mb-4 text-sm text-green-600 font-semibold text-center">
         {{ session('status') }}
     </div>
-@endif
+    @endif
+
     <div class="max-w-7xl mx-auto">
         <!-- ユーザープロフィール -->
         <div class="mb-8">
             <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between">
                 <div class="flex items-center space-x-6">
-                    <div class="w-24 h-24 sm:w-28 sm:h-28  overflow-hidden bg-gray-200 rounded-full">
+                    <div class="w-24 h-24 sm:w-28 sm:h-28 overflow-hidden bg-gray-200 rounded-full">
                         <img src="{{ $user->image ? asset($user->image) : asset('images/default-user.png') }}"
                              alt="プロフィール画像" class="object-cover w-full h-full object-center">
                     </div>
@@ -27,26 +28,28 @@
 
         <!-- タブメニュー -->
         <div class="flex border-b border-gray-300 mb-6 text-sm font-bold">
-            <button id="tab-listed"
-                    class="py-2 px-4 text-red-500 border-b-2 border-red-500 focus:outline-none">
-                出品した商品
-            </button>
-            <button id="tab-purchased"
-                    class="py-2 px-4 text-gray-500 focus:outline-none">
-                購入した商品
-            </button>
+            <a href="{{ route('users.show', ['page' => 'sell']) }}">
+                <button id="tab-listed"
+                        class="py-2 px-4 {{ $page === 'sell' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500' }}">
+                    出品した商品
+                </button>
+            </a>
+            <a href="{{ route('users.show', ['page' => 'buy']) }}">
+                <button id="tab-purchased"
+                        class="py-2 px-4 {{ $page === 'buy' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500' }}">
+                    購入した商品
+                </button>
+            </a>
         </div>
 
         <!-- 出品した商品 -->
-        <div id="listed-items" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        <div id="listed-items"
+             class="{{ $page === 'sell' ? 'grid' : 'hidden' }} grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             @forelse ($listedItems as $item)
                 <div>
                     <a href="{{ route('items.show', ['item_id' => $item->id]) }}" class="block group">
                         <div class="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-md group-hover:shadow-md transition-shadow duration-200">
-                            @php
-                                $image = optional($item->images->first())->image_url;
-                            @endphp
-
+                            @php $image = optional($item->images->first())->image_url; @endphp
                             @if ($image)
                                 <img src="{{ asset('storage/' . $image) }}"
                                      alt="{{ $item->title }}"
@@ -66,15 +69,13 @@
         </div>
 
         <!-- 購入した商品 -->
-        <div id="purchased-items" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        <div id="purchased-items"
+             class="{{ $page === 'buy' ? 'grid' : 'hidden' }} grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             @forelse ($purchasedItems as $item)
                 <div>
                     <a href="{{ route('items.show', ['item_id' => $item->id]) }}" class="block group">
                         <div class="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-md group-hover:shadow-md transition-shadow duration-200">
-                            @php
-                                $image = optional($item->images->first())->image_url;
-                            @endphp
-
+                            @php $image = optional($item->images->first())->image_url; @endphp
                             @if ($image)
                                 <img src="{{ asset('storage/' . $image) }}"
                                      alt="{{ $item->title }}"
@@ -94,27 +95,4 @@
         </div>
     </div>
 </main>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const listedTab = document.getElementById('tab-listed');
-        const purchasedTab = document.getElementById('tab-purchased');
-        const listedItems = document.getElementById('listed-items');
-        const purchasedItems = document.getElementById('purchased-items');
-
-        listedTab.addEventListener('click', () => {
-            listedTab.classList.add('text-red-500', 'border-b-2', 'border-red-500');
-            purchasedTab.classList.remove('text-red-500', 'border-b-2', 'border-red-500');
-            listedItems.classList.remove('hidden');
-            purchasedItems.classList.add('hidden');
-        });
-
-        purchasedTab.addEventListener('click', () => {
-            purchasedTab.classList.add('text-red-500', 'border-b-2', 'border-red-500');
-            listedTab.classList.remove('text-red-500', 'border-b-2', 'border-red-500');
-            purchasedItems.classList.remove('hidden');
-            listedItems.classList.add('hidden');
-        });
-    });
-</script>
 @endsection

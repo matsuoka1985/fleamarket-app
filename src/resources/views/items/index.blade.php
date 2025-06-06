@@ -11,11 +11,11 @@
             <!-- タブメニュー -->
             <div class="flex border-b border-gray-300 mb-6 text-sm font-bold">
                 <a href="{{ route('items.index') }}"
-                    class="py-2 px-4 {{ request('tab') !== 'mylist' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500' }}">
+                    class="py-2 px-4 {{ request('page') !== 'mylist' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500' }}">
                     おすすめ
                 </a>
-                <a href="{{ auth()->check() ? route('items.index', ['tab' => 'mylist']) : route('login') }}"
-                    class="py-2 px-4 {{ request('tab') === 'mylist' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500' }}">
+                <a href="{{ auth()->check() ? route('items.index', ['page' => 'mylist']) : route('login') }}"
+                    class="py-2 px-4 {{ request('page') === 'mylist' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500' }}">
                     マイリスト
                 </a>
             </div>

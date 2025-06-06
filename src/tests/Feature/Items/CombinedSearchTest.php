@@ -48,7 +48,7 @@ class CombinedSearchTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->get(route('items.index', [
-            'tab' => 'mylist',
+            'page' => 'mylist',
             'keyword' => 'Camera',
         ]));
 

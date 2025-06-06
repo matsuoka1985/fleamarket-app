@@ -78,7 +78,7 @@ Table categories {
   id bigint [pk, increment]
   key varchar(100) [unique] // 例: 'fashion' ある意味物理名
   label varchar(100)        // 表示名: 'ファッション' ある意味論理名
-  sort_order int [notnull default:1]           // 並び順
+  sort_order int [not null,default:1]           // 並び順
   created_at datetime
   updated_at datetime
 }
