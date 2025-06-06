@@ -8,8 +8,6 @@
         <div class="w-full max-w-md space-y-8">
             <!-- タイトル -->
             <h2 class="text-center text-2xl font-bold text-gray-900">会員登録</h2>
-
-
             <!-- フォーム -->
             <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-6" >
                 @csrf
@@ -46,7 +44,6 @@
                             <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-
                     <!-- 確認用パスワード -->
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700">確認用パスワード</label>
@@ -58,7 +55,6 @@
                         @enderror
                     </div>
                 </div>
-
                 <!-- 登録ボタン -->
                 <div>
                     <button type="submit"
@@ -67,9 +63,6 @@
                     </button>
                 </div>
             </form>
-
-
-
             <!-- ログインリンク -->
             <p class="mt-4 text-center">
                 <a href="{{ route('login') }}" class="text-sm text-blue-500 hover:underline">

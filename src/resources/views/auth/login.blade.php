@@ -5,12 +5,9 @@
         <div class="w-full max-w-md space-y-8">
             <!-- タイトル -->
             <h2 class="text-center text-2xl font-bold text-gray-900">ログイン</h2>
-
             <!-- フォーム -->
             <form method="POST" action="{{ route('login') }}" novalidate>
                 @csrf
-
-
                 <!-- メールアドレス -->
                 <div class="mb-6">
                     <label for="email" class="block text-sm font-bold text-gray-700">メールアドレス</label>
