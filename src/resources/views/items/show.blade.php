@@ -87,7 +87,9 @@
                 <!-- 商品説明 -->
                 <section class="mb-6">
                     <h2 class="text-lg font-bold mb-2">商品説明</h2>
-                    <p class="text-sm text-gray-700 whitespace-pre-line">{{ $item->description }}</p>
+                    <p class="text-sm text-gray-700 whitespace-pre-line">
+                        {!! nl2br(e($item->description )) !!}
+                    </p>
                 </section>
 
                 <!-- 商品の情報 -->
@@ -140,15 +142,15 @@
                                 <p class="text-sm font-semibold">{{ $comment->user->name ?? '' }}</p>
                             </div>
                             <p class="text-sm text-gray-700 bg-gray-200 rounded px-4 py-2 inline-block">
-                                {{ $comment->content }}
+                                {!! nl2br(e($comment->content)) !!}
                             </p>
                         </div>
                     @endforeach
 
-                    <form action="{{ route('comments.store', ['item_id' => $item->id]) }}" method="POST" class="mt-4">
+                    <form  id="comment-form" action="{{ route('comments.store', ['item_id' => $item->id]) }}" method="POST" class="mt-4">
                         @csrf
                         <label for="comment" class="block text-sm font-semibold mb-1">商品へのコメント</label>
-                        {{-- <textarea id="comment" name="comment" rows="4" class="w-full border border-black rounded">{{ old('comment') }}</textarea> --}}
+
                         <textarea id="comment" name="comment"
                             class="h-40 w-full border border-black rounded px-3 py-2 text-base leading-normal focus:outline-none focus:ring-2 focus:ring-black-400">{{ old('comment') }}</textarea>
 
@@ -156,9 +158,11 @@
                         @error('comment')
                             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                         @enderror
-                        <button type="submit" class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                        <button type="submit" id="comment-submit-btn"
+                            class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                             コメントを送信する
                         </button>
+
                     </form>
                 </section>
             </div>
@@ -210,6 +214,25 @@
                         console.error('Like toggle failed', e);
                     }
                 });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const form = document.getElementById("comment-form");
+                const btn = document.getElementById('comment-submit-btn');
+
+                console.log(form, btn);
+                if (form && btn) {
+                    let isSubmitting = false;
+
+                    form.addEventListener('submit', () => {
+                        if (isSubmitting) return false; // 2回目以降の submit 無効化
+                        isSubmitting = true;
+
+                        btn.disabled = true;
+                        btn.classList.add('opacity-50', 'cursor-not-allowed');
+                    });
+                }
             });
         </script>
     @endpush

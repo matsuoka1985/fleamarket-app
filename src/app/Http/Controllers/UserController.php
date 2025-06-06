@@ -112,12 +112,23 @@ class UserController extends Controller
         $user->name = $profileRequest->input('name');
 
         if ($profileRequest->hasFile('image')) {
-            $path = $profileRequest->file('image')->store('public/images/users');
-            $user->image = Storage::url($path);
+            // 現在の画像パスを保持（ストレージ相対パスに変換）
+            $oldImage = $user->image ? str_replace('/storage/', '', $user->image) : null;
+            $isDefault = $oldImage === 'images/users/default.jpg';
+
+            // 新しい画像を保存
+            $path = $profileRequest->file('image')->store('images/users', 'public');
+            $user->image = '/storage/' . $path;
+
+            // 古い画像があり、かつデフォ画像でなければ削除
+            if ($oldImage && !$isDefault) {
+                Storage::disk('public')->delete($oldImage);
+            }
         }
 
         $user->save();
 
+        // 住所の更新 or 作成
         $addressData = $addressRequest->only(['postal_code', 'address', 'building']);
         $address = $user->addresses()->first();
 
@@ -130,6 +141,7 @@ class UserController extends Controller
 
         return redirect()->route('users.show')->with('status', 'プロフィールを更新しました');
     }
+
 
 
     /**
