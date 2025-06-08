@@ -11,8 +11,11 @@ use Tests\TestCase;
 class UpdateAddressTest extends TestCase
 {
     use RefreshDatabase;
-
-    public function test_user_can_update_address_and_it_redirects_to_purchase_page()
+    /**
+     * @test
+     * 送付先住所変更画面にて登録した住所が商品購入画面に反映されている
+     */
+    public function user_can_update_address_and_it_redirects_to_purchase_page()
     {
         // メール認証済みユーザを作成（既存住所はあってもOK）
         $user = User::factory()->create(['email_verified_at' => now()]);
@@ -44,7 +47,7 @@ class UpdateAddressTest extends TestCase
      * @test
      * 購入した商品に送付先住所が紐づいて登録される
      */
-    public function test_shipping_address_is_linked_to_purchased_item()
+    public function shipping_address_is_linked_to_purchased_item()
     {
         // ユーザ・住所・商品を準備
         $buyer = User::factory()->create(['email_verified_at' => now()]);
