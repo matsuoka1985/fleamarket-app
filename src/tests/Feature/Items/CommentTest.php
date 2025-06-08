@@ -71,10 +71,10 @@ class CommentTest extends TestCase
 
     public function test_comment_validation_error_when_comment_is_empty(): void
     {
-        $user = \App\Models\User::factory()->create(['email_verified_at' => now()]);
-        \App\Models\Address::factory()->create(['user_id' => $user->id]);
+        $user = User::factory()->create(['email_verified_at' => now()]);
+        Address::factory()->create(['user_id' => $user->id]);
 
-        $item = \App\Models\Item::factory()->create(['user_id' => $user->id]);
+        $item = Item::factory()->create(['user_id' => $user->id]);
 
         $response = $this->actingAs($user)
             ->from(route('items.show', $item->id)) // エラー時のリダイレクト元指定
